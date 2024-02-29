@@ -11,7 +11,7 @@ function Toolbar() {
         const id = toolBtnRef.current.id
         const tool = id.split("Btn")[0]
         dispatch(setSelectedTool(tool))
-        console.log(selectedTool);
+        // console.log(selectedTool); 
     }
     return (
         <div>
@@ -26,16 +26,16 @@ function Toolbar() {
                 <Button ref={toolBtnRef} id="selectBtn" type={selectedTool==="select"?"primary":"text"} icon={<IconFont type="icon-select" />} onClick={onToolPress}/>
             </Tooltip>
             <Tooltip title={<span>添加Location</span>}>
-                <Button ref={toolBtnRef} id="locationBtn" type="text" icon={<IconFont type="icon-circle" />} onClick={onToolPress}/>
+                <Button ref={toolBtnRef} id="locationBtn" type={selectedTool==="location"?"primary":"text"} icon={<IconFont type="icon-circle" />} onClick={onToolPress}/>
             </Tooltip>
             <Tooltip title={<span>添加Branch</span>}>
-                <Button ref={toolBtnRef} id="branchBtn" type="text" icon={<IconFont type="icon-branch" />} onClick={onToolPress}/>
+                <Button ref={toolBtnRef} id="branchBtn" type={selectedTool==="branch"?"primary":"text"} icon={<IconFont type="icon-branch" />} onClick={onToolPress}/>
             </Tooltip>
             <Tooltip title={<span>添加Edge</span>}>
-                <Button ref={toolBtnRef} id="edgeBtn" type="text" icon={<IconFont type="icon-arrow-right-full" />} onClick={onToolPress}/>
+                <Button ref={toolBtnRef} id="edgeBtn" type={selectedTool==="edge"?"primary":"text"} icon={<IconFont type="icon-arrow-right-full" />} onClick={onToolPress}/>
             </Tooltip>
             <Tooltip title={<span>添加Nail</span>}>
-                <Button ref={toolBtnRef} id="nailBtn" type="text" icon={<IconFont type="icon-nail" />} onClick={onToolPress}/>
+                <Button ref={toolBtnRef} id="nailBtn" type={selectedTool==="nail"?"primary":"text"} icon={<IconFont type="icon-nail" />} onClick={onToolPress}/>
             </Tooltip>
 
 

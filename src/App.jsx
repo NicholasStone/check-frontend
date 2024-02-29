@@ -1,13 +1,14 @@
 import {Button, Flex} from 'antd'
 import Toolbar from './components/Toolbar'
 import Modebar from './components/Modebar'
-import EditorPanel from './pages/EditorPanel'
+import { Outlet } from 'react-router-dom'
 function App(){
   return(
     <Flex vertical>
       <Toolbar/>
       <Modebar/>
-      <EditorPanel/>
+
+      <Outlet/>
     </Flex>
   )
   
