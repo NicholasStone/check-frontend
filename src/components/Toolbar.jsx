@@ -1,4 +1,4 @@
-import { Button, Divider, Tooltip } from "antd"
+import { Button, ConfigProvider, Divider, Tooltip } from "antd"
 import IconFont from "../utils/IconFont"
 import { useDispatch, useSelector } from "react-redux"
 import { useRef } from "react"
@@ -14,7 +14,25 @@ function Toolbar() {
         // console.log(selectedTool); 
     }
     return (
-        <div>
+        <div style={{padding:'12px'}}>
+            <ConfigProvider 
+                theme={{
+                    components: {
+                      Divider: {
+                        verticalMarginInline:1
+                      },
+                    },
+                  }}>
+            <Tooltip title={<span>撤销上次动作</span>}>
+                <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-back-arrow" />}></Button>
+            </Tooltip>
+            <Tooltip title={<span>重做上次动作</span>}>
+                <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-forward-arrow" />}></Button>
+            </Tooltip>
+            <Divider style={{ backgroundColor: 'black' }} type="vertical" />
+            <Tooltip title={<span>适合窗口</span>}>
+                <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-zoom-fit" />}></Button>
+            </Tooltip>
             <Tooltip title={<span>放大</span>}>
                 <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-zoom-in" />}></Button>
             </Tooltip>
@@ -37,7 +55,9 @@ function Toolbar() {
             <Tooltip title={<span>添加Nail</span>}>
                 <Button ref={toolBtnRef} id="nailBtn" type={selectedTool==="nail"?"primary":"text"} icon={<IconFont type="icon-nail" />} onClick={onToolPress}/>
             </Tooltip>
-
+            <Divider style={{ backgroundColor: 'black' }} type="vertical" />
+            <Divider style={{ backgroundColor: 'black' }} type="vertical" />
+            </ConfigProvider>
 
 
 
