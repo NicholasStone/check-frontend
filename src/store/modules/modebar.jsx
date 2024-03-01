@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const modebarStore = createSlice({
-    name:"modebar",
-    initialState:{
-        selectedMode:"editor"
+    name: "modebar",
+    initialState: {
+        selectedMode: "editor"
     },
-    reducers:{
-        setSelectedMode(state,action){
+    reducers: {
+        setSelectedMode(state, action) {
             state.selectedMode = action.payload
         }
     }
@@ -14,12 +14,12 @@ const modebarStore = createSlice({
 
 //解构出actionCreater
 
-const {setSelectedMode} = modebarStore.actions
+const { setSelectedMode } = modebarStore.actions
 
 //获取reducer函数
 
 const modebarReducer = modebarStore.reducer
 
-export {setSelectedMode}
+export { setSelectedMode }
 
 export default modebarReducer

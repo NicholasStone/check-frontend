@@ -10,24 +10,24 @@ import App from "../App";
 
 const router = createBrowserRouter([
     {
-        path:'/',
-        element:<App/>,
-        children:[
+        path: '/',
+        element: <App />,
+        children: [
             {
-                path:'/',
-                element:<EditorPanel/>
+                path: '/',
+                element: <EditorPanel />
             },
             {
-                path:'editor',
-                element:<EditorPanel/>
+                path: 'editor',
+                element: <EditorPanel />
             },
             {
-                path:'simulator',
-                element:<SimulatorPanel/>
+                path: 'simulator',
+                element: <SimulatorPanel />
             },
             {
-                path:'verifier',
-                element:<VerifierPanel/>
+                path: 'verifier',
+                element: <VerifierPanel />
             }
         ]
     }
