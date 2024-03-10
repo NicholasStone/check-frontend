@@ -25,6 +25,21 @@ function Toolbar() {
                     },
                 }}
             >
+                {/* 第一组 */}
+                <ConfigProvider>
+                    <Tooltip title={<span>新建</span>}>
+                    <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-create" />}></Button>
+                    </Tooltip>
+                    <Tooltip title={<span>打开</span>}>
+                        <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-open-copy" />}></Button>
+                    </Tooltip>
+                    <Tooltip title={<span>保存</span>}>
+                        <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-save-copy" />}></Button>
+                    </Tooltip>
+                    <Divider style={{ backgroundColor: 'black' }} type="vertical" />
+                </ConfigProvider>
+
+                {/* 第二组 */}
                 <ConfigProvider componentDisabled={selectedMode==='editor'?false:true}>
                     <Tooltip title={<span>撤销上次动作</span>}>
                     <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-back-arrow" />}></Button>
@@ -39,7 +54,7 @@ function Toolbar() {
                 </ConfigProvider>
 
                 
-
+                {/* 第三组 */}
                 <ConfigProvider componentDisabled={selectedMode==='verifier'?true:false}>
                     <Tooltip title={<span>放大</span>}>
                     <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-zoom-in" />}></Button>
@@ -49,6 +64,8 @@ function Toolbar() {
                     </Tooltip>
                 </ConfigProvider>
                 
+
+                {/* 第四组 */}
                 <ConfigProvider componentDisabled={selectedMode==='editor'?false:true}>
                     <Divider style={{ backgroundColor: 'black' }} type="vertical" />
                     <Tooltip title={<span>选择工具</span>}>

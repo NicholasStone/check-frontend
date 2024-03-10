@@ -1,12 +1,15 @@
 import { Layout, Menu, Button, theme, Input } from 'antd';
-import { useState } from 'react';
+// import { useState } from 'react';
 import IconFont from '../../utils/IconFont';
+import Template from '../../components/Template';
+import { useSelector } from 'react-redux';
 const { Header, Sider, Content } = Layout
 function EditorPanel() {
-  const [name, setName] = useState('Template')
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  // const [name, setName] = useState('Template')
+  // const {
+  //   token: { colorBgContainer, borderRadiusLG },
+  // } = theme.useToken();
+  const {automations} = useSelector(state=>state.model)
   return (
     <Layout style={{ padding: '12px' }}>
       <Sider theme='light'>
@@ -22,7 +25,7 @@ function EditorPanel() {
             {
               key: '2',
               icon: <IconFont type='icon-clock' />,
-              label: name,
+              label: automations[0].name,
             },
             {
               key: '3',
@@ -32,22 +35,7 @@ function EditorPanel() {
           ]}
         />
       </Sider>
-      <Layout style={{ padding: '12px' }}>
-        <Header style={{ background: colorBgContainer }}>
-          名字 :<Input style={{ width: '10%', margin: '12px' }} defaultValue={name} onChange={(e) => setName(e.target.value)} />
-          参数 :<Input style={{ width: '20%', margin: '12px' }} />
-        </Header>
-        <Content
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            minHeight: 500,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-          }}
-        >
-        </Content>
-      </Layout>
+      <Template/>
     </Layout>
   )
 }

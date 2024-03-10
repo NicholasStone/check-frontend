@@ -6,6 +6,8 @@ function VerifierPanel() {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
     const {TextArea} = Input
+    const [type,setType] = useState('property')
+    const oTypeValue = {'property':'性质','note':'备注'}
     return (
         <Layout style={{ padding: '12px' }}>
             <span style={{ marginLeft: '12px' }}>性质列表</span>
@@ -24,7 +26,7 @@ function VerifierPanel() {
                         <Button>Get Trace</Button>
                         <Button>添加</Button>
                         <Button>删除</Button>
-                        <Button>备注</Button>
+                        <Button onClick={()=>type==='property'?setType('note'):setType('property')}>{oTypeValue[type]}</Button>
                     </Flex>
 
                 </Sider>
