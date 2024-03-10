@@ -4,7 +4,7 @@ const modelStore = createSlice({
     name: "model",
     initialState: {
         declaration: "//Place global declarations here.",
-        automations:[
+        autos:[
             {
                 name:"Template",
                 parameters:[],
@@ -16,7 +16,7 @@ const modelStore = createSlice({
                     name:"",
                     invariant:{}
                 },
-                declaration:""
+                declaration:"// Place local declarations here."
             }
         ],
         systemDeclaration:"// Place template instantiations here.\nProcess = Template();\n// List one or more processes to be composed into a system.\nsystem Process;"
@@ -25,8 +25,11 @@ const modelStore = createSlice({
         setDeclaration(state, action) {
             state.declaration = action.payload
         },
-        setAutomationName(state, action){
-            state.automations[0].name = action.payload
+        setAutosName(state, action){
+            state.autos[0].name = action.payload
+        },
+        setAutosDeclaration(state, action){
+            state.autos[0].declaration = action.payload
         },
         setSystemDeclaration(state, action){
             state.systemDeclaration = action.payload
@@ -36,12 +39,12 @@ const modelStore = createSlice({
 
 //解构出actionCreater
 
-const { setDeclaration,setAutomationName,setSystemDeclaration } = modelStore.actions
+const { setDeclaration,setAutosName,setAutosDeclaration,setSystemDeclaration } = modelStore.actions
 
 //获取reducer函数
 
 const modelReducer = modelStore.reducer
 
-export { setDeclaration,setAutomationName,setSystemDeclaration }
+export { setDeclaration,setAutosName,setAutosDeclaration,setSystemDeclaration }
 
 export default modelReducer

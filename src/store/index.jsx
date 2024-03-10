@@ -1,13 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import toolbarReducer from "./modules/toolbar";
-import modebarReducer from "./modules/modebar";
-import modelReducer from "./modules/model";
+import modelReducer from "./modules/editor/model";
+import barReducer from "./modules/editor/bar";
 
 //组合redux子模块+导出store实例
 const store = configureStore({
     reducer:{
-        toolbar:toolbarReducer,
-        modebar:modebarReducer,
+        bar:barReducer,
         model:modelReducer
     }
 })

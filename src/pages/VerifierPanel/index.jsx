@@ -1,6 +1,6 @@
-import { Layout, Menu, Button, theme, Input, Space, Flex } from 'antd';
+import { Layout, Button, theme, Input, Flex } from 'antd';
 import { useState } from 'react';
-const { Header, Sider, Content } = Layout
+const {Sider, Content } = Layout
 function VerifierPanel() {
     const {
         token: { colorBgContainer, borderRadiusLG },

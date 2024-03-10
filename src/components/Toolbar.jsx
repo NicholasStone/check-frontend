@@ -2,12 +2,11 @@ import { Button, ConfigProvider, Divider, Tooltip } from "antd"
 import IconFont from "../utils/IconFont"
 import { useDispatch, useSelector } from "react-redux"
 import { useRef } from "react"
-import { setSelectedTool } from "../store/modules/toolbar"
+import { setSelectedTool } from "../store/modules/editor/bar"
 function Toolbar() {
     const dispatch = useDispatch()
     const toolBtnRef = useRef(null)
-    const { selectedTool } = useSelector(state => state.toolbar)
-    const { selectedMode } = useSelector(state => state.modebar)
+    const { selectedMode,selectedTool } = useSelector(state => state.bar)
     const onToolPress = () => {
         const id = toolBtnRef.current.id
         const tool = id.split("Btn")[0]

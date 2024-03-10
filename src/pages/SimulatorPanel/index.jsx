@@ -1,7 +1,6 @@
-import { Layout, Menu, Button, theme, Input, Flex, Divider, Slider, Space } from 'antd';
-import { useState } from 'react';
+import { Layout, Button, theme, Input, Flex, Divider, Slider, Space } from 'antd';
 import IconFont from '../../utils/IconFont';
-const { Header, Sider, Content } = Layout
+const { Sider, Content } = Layout
 function SimulatorPanel() {
   const {
     token: { colorBgContainer, borderRadiusLG },

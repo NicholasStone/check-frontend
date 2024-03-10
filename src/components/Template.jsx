@@ -1,32 +1,35 @@
-import { Layout, Button, theme, Input } from 'antd';
+import { Layout, theme, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import {setAutomationName} from '../store/modules/model';
-const { Header, Sider, Content } = Layout
+import {setAutosName} from '../store/modules/editor/model';
+import Declaration from './Declaration';
+
+const { Header, Content } = Layout
 function Template() {
     const dispatch = useDispatch()
-    const {automations} = useSelector(state=>state.model)
+    const {selectedMenuItem} = useSelector(state=>state.bar)
+    const {autos} = useSelector(state=>state.model)
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
     return (
-        <Layout style={{ padding: '12px' }}>
+        <Layout>
             <Header style={{ background: colorBgContainer }}>
-                名字 :<Input style={{ width: '10%', margin: '12px' }} defaultValue={automations[0].name} onChange={(e) =>{
-                    dispatch(setAutomationName(e.target.value))
+                名字 :<Input style={{ width: '10%', margin: '12px' }} defaultValue={autos[0].name} onChange={(e) =>{
+                    dispatch(setAutosName(e.target.value))
                     console.log(e.target.value);
-                    console.log(automations);
+                    console.log(autos);
                     }} />
                 参数 :<Input style={{ width: '20%', margin: '12px' }} />
             </Header>
             <Content
                 style={{
                     margin: '24px 16px',
-                    padding: 24,
                     minHeight: 500,
                     background: colorBgContainer,
                     borderRadius: borderRadiusLG,
                 }}
             >
+                {selectedMenuItem==='model'?<></>:<Declaration type={selectedMenuItem} declaration={autos[0].declaration}/>}
             </Content>
         </Layout>
 

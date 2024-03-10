@@ -1,13 +1,13 @@
 import { Segmented } from "antd"
 import { useDispatch, useSelector } from "react-redux"
-import { setSelectedMode } from "../store/modules/modebar"
+import { setSelectedMode } from "../store/modules/editor/bar"
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 
 function Modebar() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { selectedMode } = useSelector(state => state.modebar)
+    const { selectedMode } = useSelector(state => state.bar)
     const m = new Map()
     m.set('编辑器', 'editor')
     m.set('模拟器', 'simulator')
