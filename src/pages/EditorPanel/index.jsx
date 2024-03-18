@@ -19,7 +19,7 @@ function EditorPanel() {
       <Sider theme='light'>
         <Menu
           mode="inline"
-          defaultSelectedKeys={['model']}
+          defaultSelectedKeys={[selectedMenuItem]}
           items={[
             {
               key: 'global_declaration',

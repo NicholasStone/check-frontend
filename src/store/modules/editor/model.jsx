@@ -8,14 +8,22 @@ const modelStore = createSlice({
             {
                 name:"Template",
                 parameters:[],
-                locations:null,
-                transitions:null,
-                init:{
-                    state:null,
-                    id:0,
-                    name:"",
-                    invariant:{}
-                },
+                locations:[
+                    {
+                        id:1,
+                        name:"start",
+                        x:250,
+                        y:200,
+                    },
+                    {
+                        id:2,
+                        name:"end",
+                        x:500,
+                        y:200,
+                    },
+                ],//id name x y
+                transitions:[],//id source_id target_id guard update
+                init:1,
                 declaration:"// Place local declarations here."
             }
         ],
@@ -27,6 +35,9 @@ const modelStore = createSlice({
         },
         setAutosName(state, action){
             state.autos[0].name = action.payload
+        },
+        setAutosLocations(state, action){
+            state.autos[0].locations = action.payload
         },
         setAutosDeclaration(state, action){
             state.autos[0].declaration = action.payload

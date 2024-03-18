@@ -2,7 +2,7 @@ import { Layout, theme, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {setAutosName} from '../store/modules/editor/model';
 import Declaration from './Declaration';
-
+import Model from './Model';
 const { Header, Content } = Layout
 function Template() {
     const dispatch = useDispatch()
@@ -24,12 +24,16 @@ function Template() {
             <Content
                 style={{
                     margin: '24px 16px',
-                    minHeight: 500,
+                    position:'relative',
+                    // width:'1390px',
+                    minHeight: '500px',
                     background: colorBgContainer,
                     borderRadius: borderRadiusLG,
                 }}
             >
-                {selectedMenuItem==='model'?<></>:<Declaration type={selectedMenuItem} declaration={autos[0].declaration}/>}
+                {selectedMenuItem==='model'?<Model/>:
+                <Declaration type={selectedMenuItem} declaration={autos[0].declaration}/>}
+                
             </Content>
         </Layout>
 

@@ -11,6 +11,7 @@ const barStore = createSlice({
         setSelectedMode(state, action) {
             state.selectedMode = action.payload
         },
+        // select location branch edge nail
         setSelectedTool(state, action) {
             state.selectedTool = action.payload
         },

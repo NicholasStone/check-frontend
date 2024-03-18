@@ -18,21 +18,22 @@ function Declaration(props){
                 onChange={(e)=>{
                     const newValue = e.target.value
                     setValue(newValue)
-                    // switch(type){
-                    //     case "global_declaration":{
-                    //         dispatch(setDeclaration(newValue))
-                    //         break
-                    //     }
-                    //     case "system_declaration":{
-                    //         dispatch(setSystemDeclaration(newValue))
-                    //         break
-                    //     }
-                    //     case "local_declaration":{
-                    //         dispatch(setAutosDeclaration(newValue))
-                    //         break
-                    //     }
-                    //     default:break
-                    // }
+                    switch(type){
+                        case "global_declaration":{
+                            dispatch(setDeclaration(newValue))
+                            break
+                        }
+                        case "system_declaration":{
+                            dispatch(setSystemDeclaration(newValue))
+                            break
+                        }
+                        case "local_declaration":{
+                            dispatch(setAutosDeclaration(newValue))
+                            break
+                        }
+                        default:break
+                    }
+                    console.log(value);
                     }}>
             </TextArea>
         </Layout>

@@ -11,7 +11,7 @@ function Toolbar() {
         const id = toolBtnRef.current.id
         const tool = id.split("Btn")[0]
         dispatch(setSelectedTool(tool))
-        // console.log(selectedTool); 
+        console.log(selectedTool);
     }
     return (
         <div style={{ padding: '12px' }}>
