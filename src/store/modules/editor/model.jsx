@@ -50,12 +50,12 @@ const modelStore = createSlice({
 
 //解构出actionCreater
 
-const { setDeclaration,setAutosName,setAutosDeclaration,setSystemDeclaration } = modelStore.actions
+const { setDeclaration,setAutosName,setAutosLocations,setAutosDeclaration,setSystemDeclaration } = modelStore.actions
 
 //获取reducer函数
 
 const modelReducer = modelStore.reducer
 
-export { setDeclaration,setAutosName,setAutosDeclaration,setSystemDeclaration }
+export { setDeclaration,setAutosName,setAutosLocations,setAutosDeclaration,setSystemDeclaration }
 
 export default modelReducer
