@@ -2,7 +2,7 @@ import { Button, Drawer } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import Location from "./Location"
-import Edge from "./Edge"
+import Transition from "./Transition"
 import { setAutosLocations } from "../store/modules/editor/model"
 function Model(){
     const dispatch = useDispatch()
@@ -10,13 +10,18 @@ function Model(){
     const {autos} = useSelector(state=>state.model)
     const [open, setOpen] = useState(true);
     const [model,setModel] = useState([]);
-    function updateModel(){
+    function initModel(){
         console.log(autos[0].locations);
-        setModel(autos[0].locations.map(location=><Location key={location.id} location={location} init={location.id===autos[0].init}/>))
+        console.log(autos[0].transitions);
+        const tmpLocations = autos[0].locations.map(location=><Location key={location.id} location={location} init={location.id===autos[0].init}/>)
+        const tmpTransitions = autos[0].transitions.map(transition=><Transition key={transition.id} transition={transition}/>)
+        setModel([...tmpLocations,tmpTransitions])
     }
+
     useEffect(() => {
-        updateModel()
+        initModel()
     }, [])
+
     function addLocation(x1,y1){
       const locations = autos[0].locations
       const location = {
@@ -30,11 +35,15 @@ function Model(){
       dispatch(setAutosLocations([...locations,location]))
       console.log(model);
     }
+
     return(
-        <div style={{width:'100%', height:'500px', position:'relative'}} onClick={(e)=>{if(selectedTool==='location') addLocation(e.clientX-e.target.getBoundingClientRect().left,e.clientY-e.target.getBoundingClientRect().top)}}>
+        <svg style={{width:'100%', height:'500px'}} onClick={(e)=>{if(selectedTool==='location') addLocation(e.clientX-e.target.getBoundingClientRect().left,e.clientY-e.target.getBoundingClientRect().top)}}
+         >
+          <script src="https://at.alicdn.com/t/c/font_4447395_prlpotdyeh.js"/>
             {model}
-            <Edge x1={275} y1={230} x2={500} y2={230}/>
-            <Edge x1={500} y1={240} x2={275} y2={240}/>
+            {/* <Transition x1={275} y1={230} x2={500} y2={230} guard={} update={}/> */}
+            {/* <Transition x1={500} y1={240} x2={275} y2={240} guard="test" update="test2"/>
+            <Location/> */}
             {/* <Drawer
         title="Basic Drawer"
         placement="right"
@@ -45,7 +54,7 @@ function Model(){
       >
         <p>Some contents...</p>
       </Drawer> */}
-        </div>
+        </svg>
         
         
     )

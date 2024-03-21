@@ -11,18 +11,84 @@ const modelStore = createSlice({
                 locations:[
                     {
                         id:1,
-                        name:"start",
+                        name:"A",
+                        invariant:"",
                         x:250,
-                        y:200,
+                        y:100,
                     },
                     {
                         id:2,
-                        name:"end",
+                        name:"req",
+                        invariant:"x<=k",
                         x:500,
-                        y:200,
+                        y:100,
+                    },
+                    {
+                        id:3,
+                        name:"cs",
+                        invariant:"",
+                        x:250,
+                        y:350,
+                    },
+                    {
+                        id:4,
+                        name:"wait",
+                        invariant:"",
+                        x:500,
+                        y:350,
                     },
                 ],//id name x y
-                transitions:[],//id source_id target_id guard update
+                transitions:[
+                    {
+                        id:1,
+                        sourceId:1,
+                        targetId:2,
+                        nails:[],
+                        guard:"id == 0",
+                        update:"x = 0"
+                    },
+                    {
+                        id:2,
+                        sourceId:2,
+                        targetId:4,
+                        nails:[],
+                        guard:"x <= k",
+                        update:"x = 0 ,\nid = pid"
+                    },
+                    {
+                        id:3,
+                        sourceId:4,
+                        targetId:3,
+                        nails:[],
+                        guard:"x > k && id == pid",
+                        update:""
+                    },
+                    {
+                        id:4,
+                        sourceId:3,
+                        targetId:1,
+                        nails:[],
+                        guard:"",
+                        update:"id = 0"
+                    },
+                    {
+                        id:5,
+                        sourceId:4,
+                        targetId:2,
+                        nails:[
+                            {
+                                x:550,
+                                y:300,
+                            },
+                            {
+                                x:550,
+                                y:150
+                            }
+                        ],
+                        guard:"id == 0",
+                        update:"x = 0"
+                    },
+                ],//id source_id target_id guard update
                 init:1,
                 declaration:"// Place local declarations here."
             }
