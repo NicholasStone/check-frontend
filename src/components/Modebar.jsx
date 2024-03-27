@@ -25,7 +25,6 @@ function Modebar() {
                         const mode = m.get(value)
                         dispatch(setSelectedMode(mode))
                         navigate('/' + mode)
-                        // console.log(selectedMode);
                     }} />
         </div>
     )

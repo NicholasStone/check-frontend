@@ -7,35 +7,37 @@ const modelStore = createSlice({
         autos:[
             {
                 name:"Template",
-                parameters:[],
+                parameters:"int id",
                 locations:[
                     {
                         id:1,
-                        name:"A",
-                        invariant:"",
+                        name:{
+                            content:"start",
+                            x:250,
+                            y:100
+                        },
+                        invariant:{
+                            content:"",
+                            x:250,
+                            y:100
+                        },
                         x:250,
                         y:100,
                     },
                     {
                         id:2,
-                        name:"req",
-                        invariant:"x<=k",
+                        name:{
+                            content:"end",
+                            x:250,
+                            y:100
+                        },
+                        invariant:{
+                            content:"x<=k",
+                            x:500,
+                            y:100
+                        },
                         x:500,
-                        y:100,
-                    },
-                    {
-                        id:3,
-                        name:"cs",
-                        invariant:"",
-                        x:250,
-                        y:350,
-                    },
-                    {
-                        id:4,
-                        name:"wait",
-                        invariant:"",
-                        x:500,
-                        y:350,
+                        y:200,
                     },
                 ],//id name x y
                 transitions:[
@@ -44,49 +46,26 @@ const modelStore = createSlice({
                         sourceId:1,
                         targetId:2,
                         nails:[],
-                        guard:"id == 0",
-                        update:"x = 0"
-                    },
-                    {
-                        id:2,
-                        sourceId:2,
-                        targetId:4,
-                        nails:[],
-                        guard:"x <= k",
-                        update:"x = 0 ,\nid = pid"
-                    },
-                    {
-                        id:3,
-                        sourceId:4,
-                        targetId:3,
-                        nails:[],
-                        guard:"x > k && id == pid",
-                        update:""
-                    },
-                    {
-                        id:4,
-                        sourceId:3,
-                        targetId:1,
-                        nails:[],
-                        guard:"",
-                        update:"id = 0"
-                    },
-                    {
-                        id:5,
-                        sourceId:4,
-                        targetId:2,
-                        nails:[
-                            {
-                                x:550,
-                                y:300,
-                            },
-                            {
-                                x:550,
-                                y:150
-                            }
-                        ],
-                        guard:"id == 0",
-                        update:"x = 0"
+                        select:{
+                            content:"select",
+                            x:270,
+                            y:90
+                        },
+                        guard:{
+                            content:"id == 0",
+                            x:270,
+                            y:90
+                        },
+                        sync:{
+                            content:"sync",
+                            x:270,
+                            y:90
+                        },
+                        update:{
+                            content:"x = 0",
+                            x:450,
+                            y:90
+                        }
                     },
                 ],//id source_id target_id guard update
                 init:1,
@@ -102,8 +81,38 @@ const modelStore = createSlice({
         setAutosName(state, action){
             state.autos[0].name = action.payload
         },
-        setAutosLocations(state, action){
-            state.autos[0].locations = action.payload
+        setAutosParameters(state, action){
+            state.autos[0].parameters = action.payload
+        },
+        addAutosLocation(state, action){
+            state.autos[0].locations.push(action.payload)
+        },
+        updateAutosLocation(state, action){
+            const tmp = action.payload
+            state.autos[0].locations = state.autos[0].locations
+            .map((location)=>{
+                if(location.id===tmp.id){
+                    return tmp
+                }
+                else{
+                    return location
+                }
+            })
+        },
+        addAutosTransition(state, action){
+            state.autos[0].transitions.push(action.payload)
+        },
+        updateAutosTransition(state, action){
+            const tmp = action.payload
+            state.autos[0].transitions = state.autos[0].transitions
+            .map((transition)=>{
+                if(transition.id===tmp.id){
+                    return tmp
+                }
+                else{
+                    return transition
+                }
+            })
         },
         setAutosDeclaration(state, action){
             state.autos[0].declaration = action.payload
@@ -116,12 +125,12 @@ const modelStore = createSlice({
 
 //解构出actionCreater
 
-const { setDeclaration,setAutosName,setAutosLocations,setAutosDeclaration,setSystemDeclaration } = modelStore.actions
+const { setDeclaration,setAutosName,setAutosParameters,addAutosLocation,updateAutosLocation,addAutosTransition,updateAutosTransition,setAutosDeclaration,setSystemDeclaration } = modelStore.actions
 
 //获取reducer函数
 
 const modelReducer = modelStore.reducer
 
-export { setDeclaration,setAutosName,setAutosLocations,setAutosDeclaration,setSystemDeclaration }
+export { setDeclaration,setAutosName,setAutosParameters,addAutosLocation,updateAutosLocation,addAutosTransition,updateAutosTransition,setAutosDeclaration,setSystemDeclaration }
 
 export default modelReducer

@@ -6,18 +6,19 @@ import { useDispatch } from "react-redux"
 function Declaration(props){
     const dispatch = useDispatch()
     const {TextArea} = Input
-    const [value,setValue] = useState(props.declaration)
-    const type = props.type 
+    // const [value,setValue] = useState(props.declaration)
+    const {type,declaration} = props
+
     return(
         <Layout>
             <TextArea style={{
                 resize:'none',
                 height: 600,
                 }}
-                value={value}
+                value={declaration}
                 onChange={(e)=>{
                     const newValue = e.target.value
-                    setValue(newValue)
+                    // setValue(newValue)
                     switch(type){
                         case "global_declaration":{
                             dispatch(setDeclaration(newValue))
@@ -33,7 +34,7 @@ function Declaration(props){
                         }
                         default:break
                     }
-                    console.log(value);
+                     console.log(declaration);
                     }}>
             </TextArea>
         </Layout>

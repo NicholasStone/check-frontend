@@ -48,7 +48,7 @@ function VerifierPanel() {
             return
         }
         // get result fromback-end
-        const newRes = 'false'
+        const newRes = 'true'
         const newProperties = properties.map(property=>{
             if(property.id===selectedRow){
                 const tmp = {...property}

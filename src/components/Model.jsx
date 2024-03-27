@@ -1,62 +1,138 @@
-import { Button, Drawer } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import Location from "./Location"
 import Transition from "./Transition"
-import { setAutosLocations } from "../store/modules/editor/model"
+import { addAutosLocation, addAutosTransition } from "../store/modules/editor/model"
+import LocationEditor from "./LocationEditor"
+import TransitionEditor from "./TransitionEditor"
 function Model(){
     const dispatch = useDispatch()
     const {selectedTool} = useSelector(state=>state.bar)
-    const {autos} = useSelector(state=>state.model)
-    const [open, setOpen] = useState(true);
+    const {locations,transitions,init} = useSelector(state=>state.model.autos[0])
+    //view
     const [model,setModel] = useState([]);
-    function initModel(){
-        console.log(autos[0].locations);
-        console.log(autos[0].transitions);
-        const tmpLocations = autos[0].locations.map(location=><Location key={location.id} location={location} init={location.id===autos[0].init}/>)
-        const tmpTransitions = autos[0].transitions.map(transition=><Transition key={transition.id} transition={transition}/>)
+    //source&target location id
+    let clickedLocation = []
+    //points of clicked locations
+    let points = []
+    function updateModel(){
+        const tmpLocations = locations.map(location=><Location key={location.id} location={location} init={location.id===init}/>)
+        const tmpTransitions = transitions.map(transition=><Transition key={transition.id} transition={transition}/>)
         setModel([...tmpLocations,tmpTransitions])
     }
 
     useEffect(() => {
-        initModel()
-    }, [])
+        updateModel()
+    }, [locations,transitions,init])
 
     function addLocation(x1,y1){
-      const locations = autos[0].locations
       const location = {
         id:locations[locations.length-1].id+1,
-        name:'',
+        name:{
+          content:'',
+          x:x1,
+          y:y1
+        },
+        invariant:{
+          content:'',
+          x:x1,
+          y:y1
+        },
         x:x1,
         y:y1
       }
-      console.log(location);
+      //update view
       setModel([...model,<Location key={location.id} init={false} location={location}/>])
-      dispatch(setAutosLocations([...locations,location]))
-      console.log(model);
+      //update model
+      dispatch(addAutosLocation(location))
+      console.log(locations);
+    }
+
+    function addTransition(){
+      console.log(clickedLocation);
+      console.log(points);
+      const sourceLocation = locations.find(location=>location.id===clickedLocation[0])
+      const targetLocation = locations.find(location=>location.id===clickedLocation[1])
+      console.log(sourceLocation,targetLocation);
+      const transition = {
+        id:transitions[transitions.length-1].id+1,
+        sourceId:sourceLocation.id,
+        targetId:targetLocation.id,
+        nails:points,
+        select:{
+          content:'',
+          x:sourceLocation.x,
+          y:sourceLocation.y
+        },
+        guard:{
+          content:'',
+          x:sourceLocation.x,
+          y:sourceLocation.y
+        },
+        sync:{
+          content:'',
+          x:targetLocation.x,
+          y:targetLocation.y
+        },
+        update:{
+          content:'',
+          x:targetLocation.x,
+          y:targetLocation.y
+        },
+
+      }
+
+      //update view
+      setModel([...model,<Transition key={transition.id} transition={transition}/>])
+      //update model
+      dispatch(addAutosTransition(transition))
     }
 
     return(
-        <svg style={{width:'100%', height:'500px'}} onClick={(e)=>{if(selectedTool==='location') addLocation(e.clientX-e.target.getBoundingClientRect().left,e.clientY-e.target.getBoundingClientRect().top)}}
+      <>
+        <svg 
+        style={{width:'100%', height:'500px'}} 
+        onClick={
+          (e)=>{
+            if(selectedTool==='location'){
+              addLocation(e.clientX-e.target.getBoundingClientRect().left,e.clientY-e.target.getBoundingClientRect().top)
+            }
+            else if(selectedTool==='edge'){
+              //click location
+              if(e.target.getAttribute('class')!==null&&e.target.getAttribute('class').includes('circle')){
+                clickedLocation.push(parseInt(e.target.getAttribute('id')))
+                //add transition
+                if(clickedLocation.length===2){
+                  addTransition()
+                  clickedLocation = []
+                  points = []
+                }
+              }
+              //click other places
+              else{
+                const xOffset = e.target.getBoundingClientRect().left
+                const yOffset = e.target.getBoundingClientRect().top
+                //save the x,y only when one location already clicked
+                if(clickedLocation.length===1){
+                  points.push({x:e.clientX-xOffset,y:e.clientY-yOffset})
+                }
+              }
+              console.log("clicked");
+              console.log(clickedLocation.length);
+            }
+
+            }
+        }
          >
           <script src="https://at.alicdn.com/t/c/font_4447395_prlpotdyeh.js"/>
             {model}
             {/* <Transition x1={275} y1={230} x2={500} y2={230} guard={} update={}/> */}
             {/* <Transition x1={500} y1={240} x2={275} y2={240} guard="test" update="test2"/>
             <Location/> */}
-            {/* <Drawer
-        title="Basic Drawer"
-        placement="right"
-        closable={false}
-        onClose={()=>setOpen(false)}
-        open={open}
-        getContainer={false}
-      >
-        <p>Some contents...</p>
-      </Drawer> */}
         </svg>
-        
-        
+        <LocationEditor/>
+        <TransitionEditor/>
+      </>
     )
 }
 

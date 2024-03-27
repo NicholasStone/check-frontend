@@ -1,13 +1,14 @@
 import React from 'react';
 import Draggable from 'react-draggable';
-import { useSelector } from 'react-redux';
-import Location from './Location';
+import { useDispatch, useSelector } from 'react-redux';
+import { setOpenTransition, setTransitionOpen } from '../store/modules/editor/drawer';
 
 const Transition = (props) => {
+  const dispatch = useDispatch()
   const {transition} = props
   const {selectedTool} = useSelector(state=>state.bar)
-  const {autos} = useSelector(state=>state.model)
-  const locationPairs = findLocationPairs(autos[0].locations)
+  const {locations} = useSelector(state=>state.model.autos[0])
+  const locationPairs = findLocationPairs(locations)
   const points = createPoints(); 
   function findLocationPairs(locations){
     const sourceLocation = locations.find(location=>location.id===transition.sourceId)
@@ -25,12 +26,9 @@ const Transition = (props) => {
     const yOffset = Math.abs(Math.sin(angle)*r);
     const arr = [locationPairs[0].x+xDir*xOffset,locationPairs[0].y+yDir*yOffset]
     for(let nail of transition.nails){
-      arr.push(nail.x)
-      arr.push(nail.y)
+      arr.push(nail.x,nail.y)
     }
-    arr.push(locationPairs[1].x-xDir*xOffset)
-    arr.push(locationPairs[1].y-yDir*yOffset)
-    console.log(arr);
+    arr.push(locationPairs[1].x-xDir*xOffset,locationPairs[1].y-yDir*yOffset)
     return arr;
   }
   return (
@@ -48,20 +46,32 @@ const Transition = (props) => {
           <polyline points="0,0 6,3 0,6" fill="none" stroke="#000" strokeWidth="1" />
         </marker>
         </defs>
+        {/* select */}
+        <Draggable onStart={()=>selectedTool==='select'}>
+        <text x={transition.select.x} y={transition.select.y} fill='#FFCC00' textAnchor='start'>{transition.select.content}</text>
+        </Draggable>
         {/* guard */}
         <Draggable onStart={()=>selectedTool==='select'}>
-        <text x={locationPairs[0].x} y={locationPairs[0].y} fill='#66CC66' textAnchor='start'>{transition.guard}</text>
+        <text x={transition.guard.x} y={transition.guard.y} fill='#66CC66' textAnchor='start'>{transition.guard.content}</text>
+        </Draggable>
+        {/* sync */}
+        <Draggable onStart={()=>selectedTool==='select'}>
+        <text x={transition.sync.x} y={transition.sync.y} fill='#33CCFF' textAnchor='start'>{transition.sync.content}</text>
         </Draggable>
         {/* update */}
         <Draggable onStart={()=>selectedTool==='select'}>
-        <text x={locationPairs[1].x} y={locationPairs[1].y} fill='#0000FF' textAnchor='end'>{transition.update}</text>
+        <text x={transition.update.x} y={transition.update.y} fill='#0000FF' textAnchor='start'>{transition.update.content}</text>
         </Draggable>
         {/* arrow */}
         <polyline
           points={points}
-          style={{ stroke: 'black', strokeWidth: 1.5 }}
+          style={{ stroke: 'black', strokeWidth: 2 }}
           fill='none'
           markerEnd="url(#arrow)"
+          onClick={(e)=>{
+            dispatch(setOpenTransition(transition))
+            dispatch(setTransitionOpen(true))
+          }}
         />
       </>
   );
