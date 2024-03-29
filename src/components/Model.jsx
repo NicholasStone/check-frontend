@@ -9,21 +9,18 @@ function Model(){
     const dispatch = useDispatch()
     const {selectedTool} = useSelector(state=>state.bar)
     const {locations,transitions,init} = useSelector(state=>state.model.autos[0])
-    //view
-    const [model,setModel] = useState([]);
     //source&target location id
     let clickedLocation = []
     //points of clicked locations
     let points = []
+    
+    //view
     function updateModel(){
+      console.log(locations,transitions);
         const tmpLocations = locations.map(location=><Location key={location.id} location={location} init={location.id===init}/>)
         const tmpTransitions = transitions.map(transition=><Transition key={transition.id} transition={transition}/>)
-        setModel([...tmpLocations,tmpTransitions])
+        return [...tmpLocations,tmpTransitions]
     }
-
-    useEffect(() => {
-        updateModel()
-    }, [locations,transitions,init])
 
     function addLocation(x1,y1){
       const location = {
@@ -41,8 +38,7 @@ function Model(){
         x:x1,
         y:y1
       }
-      //update view
-      setModel([...model,<Location key={location.id} init={false} location={location}/>])
+
       //update model
       dispatch(addAutosLocation(location))
       console.log(locations);
@@ -82,8 +78,6 @@ function Model(){
 
       }
 
-      //update view
-      setModel([...model,<Transition key={transition.id} transition={transition}/>])
       //update model
       dispatch(addAutosTransition(transition))
     }
@@ -125,7 +119,7 @@ function Model(){
         }
          >
           <script src="https://at.alicdn.com/t/c/font_4447395_prlpotdyeh.js"/>
-            {model}
+            {updateModel()}
             {/* <Transition x1={275} y1={230} x2={500} y2={230} guard={} update={}/> */}
             {/* <Transition x1={500} y1={240} x2={275} y2={240} guard="test" update="test2"/>
             <Location/> */}

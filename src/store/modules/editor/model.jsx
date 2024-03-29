@@ -99,6 +99,12 @@ const modelStore = createSlice({
                 }
             })
         },
+        deleteAutosLocation(state, action){
+            const locationId = action.payload
+            state.autos[0].locations = state.autos[0].locations.filter((location)=>location.id!==locationId)
+            //delete related transitions
+            state.autos[0].transitions = state.autos[0].transitions.filter((transition)=>transition.sourceId!==locationId&&transition.targetId!==locationId)
+        },
         addAutosTransition(state, action){
             state.autos[0].transitions.push(action.payload)
         },
@@ -114,6 +120,10 @@ const modelStore = createSlice({
                 }
             })
         },
+        deleteAutosTransition(state, action){
+            const transitionId = action.payload
+            state.autos[0].transitions = state.autos[0].transitions.filter((transition)=>transition.id!==transitionId)
+        },
         setAutosDeclaration(state, action){
             state.autos[0].declaration = action.payload
         },
@@ -125,12 +135,38 @@ const modelStore = createSlice({
 
 //解构出actionCreater
 
-const { setDeclaration,setAutosName,setAutosParameters,addAutosLocation,updateAutosLocation,addAutosTransition,updateAutosTransition,setAutosDeclaration,setSystemDeclaration } = modelStore.actions
+const {
+    setDeclaration,
+    setAutosName,
+    setAutosParameters,
+    addAutosLocation,
+    updateAutosLocation,
+    deleteAutosLocation,
+    addAutosTransition,
+    updateAutosTransition,
+    deleteAutosTransition,
+    setAutosDeclaration,
+    setSystemDeclaration
+    
+} = modelStore.actions
 
 //获取reducer函数
 
 const modelReducer = modelStore.reducer
 
-export { setDeclaration,setAutosName,setAutosParameters,addAutosLocation,updateAutosLocation,addAutosTransition,updateAutosTransition,setAutosDeclaration,setSystemDeclaration }
+export { 
+    setDeclaration,
+    setAutosName,
+    setAutosParameters,
+    addAutosLocation,
+    updateAutosLocation,
+    deleteAutosLocation,
+    addAutosTransition,
+    updateAutosTransition,
+    deleteAutosTransition,
+    setAutosDeclaration,
+    setSystemDeclaration
+
+}
 
 export default modelReducer

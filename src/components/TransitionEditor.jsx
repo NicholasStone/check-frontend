@@ -1,7 +1,7 @@
-import { Drawer,Input } from "antd"
+import { Drawer,Input,Button } from "antd"
 import { useDispatch, useSelector } from "react-redux";
 import { setLocationOpen, setOpenTransition, setTransitionOpen } from "../store/modules/editor/drawer";
-import { updateAutosTransition } from "../store/modules/editor/model";
+import { deleteAutosTransition, updateAutosTransition } from "../store/modules/editor/model";
 
 function TransitionEditor(){
     const dispatch = useDispatch()
@@ -31,6 +31,11 @@ function TransitionEditor(){
         //an encapsulated method
         dispatch(updateAutosTransition(tmp))
     }
+
+    function deleteTransition(){
+        dispatch(deleteAutosTransition(openTransition.id))
+    }
+
     return (
         <Drawer
         title="编辑transition"
@@ -50,6 +55,7 @@ function TransitionEditor(){
         Update:<Input style={{ width: '70%', margin: '12px' }} value={openTransition.update.content} 
         onChange={(e)=>{updateContent('update',e.target.value)}}/><br/>
         
+        <br /><Button onClick={deleteTransition}>删除transition</Button>
 </Drawer>
     )
 }

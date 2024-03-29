@@ -1,8 +1,8 @@
-import { Drawer,Input } from "antd"
+import { Button, Drawer,Input } from "antd"
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setLocationOpen, setOpenLocation } from "../store/modules/editor/drawer";
-import { updateAutosLocation } from "../store/modules/editor/model";
+import { deleteAutosLocation, updateAutosLocation } from "../store/modules/editor/model";
 
 function LocationEditor(){
     const dispatch = useDispatch()
@@ -24,6 +24,9 @@ function LocationEditor(){
         //an encapsulated method
         dispatch(updateAutosLocation(tmp))
     }
+    function deleteLocation(){
+        dispatch(deleteAutosLocation(openLocation.id))
+    }
     return (
         <Drawer
         title="编辑location"
@@ -39,6 +42,8 @@ function LocationEditor(){
 
         Invariant:<Input style={{ width: '70%', margin: '12px' }} value={openLocation.invariant.content}
         onChange={(e)=>{updateContent('invariant',e.target.value)}}/><br/>
+
+        <br /><Button onClick={deleteLocation}>删除location</Button>
         
 </Drawer>
     )
