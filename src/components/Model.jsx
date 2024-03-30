@@ -14,7 +14,7 @@ function Model(){
     //points of clicked locations
     let points = []
     
-    //view
+    //view model
     function updateModel(){
       console.log(locations,transitions);
         const tmpLocations = locations.map(location=><Location key={location.id} location={location} init={location.id===init}/>)

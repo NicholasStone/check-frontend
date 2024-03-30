@@ -78,6 +78,9 @@ const modelStore = createSlice({
         setDeclaration(state, action) {
             state.declaration = action.payload
         },
+        setAutos(state, action) {
+            state.autos = action.payload
+        },
         setAutosName(state, action){
             state.autos[0].name = action.payload
         },
@@ -137,6 +140,7 @@ const modelStore = createSlice({
 
 const {
     setDeclaration,
+    setAutos,
     setAutosName,
     setAutosParameters,
     addAutosLocation,
@@ -156,6 +160,7 @@ const modelReducer = modelStore.reducer
 
 export { 
     setDeclaration,
+    setAutos,
     setAutosName,
     setAutosParameters,
     addAutosLocation,

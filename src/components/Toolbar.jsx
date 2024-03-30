@@ -3,18 +3,64 @@ import IconFont from "../utils/IconFont"
 import { useDispatch, useSelector } from "react-redux"
 import { useRef } from "react"
 import { setSelectedTool } from "../store/modules/editor/bar"
+import { setAutos, setDeclaration, setSystemDeclaration } from "../store/modules/editor/model"
 function Toolbar() {
     const dispatch = useDispatch()
     const toolBtnRef = useRef(null)
+    const fileInputRef = useRef(null);
     const { selectedMode,selectedTool } = useSelector(state => state.bar)
+    const {declaration,autos,systemDeclaration} = useSelector(state=>state.model)
     const onToolPress = () => {
         const id = toolBtnRef.current.id
         const tool = id.split("Btn")[0]
         dispatch(setSelectedTool(tool))
         console.log(selectedTool);
     }
+    const onSaveClicked = ()=>{
+        const jsonData = {
+            declaration: declaration,
+            autos: autos,
+            systemDeclaration: systemDeclaration
+          };
+      
+          const jsonString = JSON.stringify(jsonData, null, 2);
+          const blob = new Blob([jsonString], { type: 'application/json' });
+      
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const dataUrl = event.target.result;
+            const anchor = document.createElement('a');
+            anchor.href = dataUrl;
+            anchor.download = 'model.json';
+            anchor.click();
+          };
+      
+          reader.readAsDataURL(blob);
+    }
+
+    const handleFileInputChange = (event)=>{
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const jsonData = JSON.parse(event.target.result)
+                // console.log('Imported JSON data:', jsonData);
+                const {declaration,autos,systemDeclaration} = jsonData
+                dispatch(setDeclaration(declaration))
+                dispatch(setAutos(autos))
+                dispatch(setSystemDeclaration(systemDeclaration))
+            };
+            reader.readAsText(file);
+        }
+    }
     return (
         <div style={{ padding: '12px' }}>
+            <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileInputChange}
+        style={{ display: 'none' }}
+      />
             <ConfigProvider
                 theme={{
                     components: {
@@ -30,10 +76,10 @@ function Toolbar() {
                     <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-create" />}></Button>
                     </Tooltip>
                     <Tooltip title={<span>打开</span>}>
-                        <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-open-copy" />}></Button>
+                        <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-open-copy" />} onClick={() => fileInputRef.current.click()}></Button>
                     </Tooltip>
                     <Tooltip title={<span>保存</span>}>
-                        <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-save-copy" />}></Button>
+                        <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-save-copy" />} onClick={onSaveClicked}></Button>
                     </Tooltip>
                     <Divider style={{ backgroundColor: 'black' }} type="vertical" />
                 </ConfigProvider>
