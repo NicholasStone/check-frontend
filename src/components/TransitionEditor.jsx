@@ -34,6 +34,7 @@ function TransitionEditor(){
 
     function deleteTransition(){
         dispatch(deleteAutosTransition(openTransition.id))
+        dispatch(setTransitionOpen(false))
     }
 
     return (

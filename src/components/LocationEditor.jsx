@@ -26,6 +26,7 @@ function LocationEditor(){
     }
     function deleteLocation(){
         dispatch(deleteAutosLocation(openLocation.id))
+        dispatch(setLocationOpen(false))
     }
     return (
         <Drawer
