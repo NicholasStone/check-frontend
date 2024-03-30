@@ -28,8 +28,8 @@ const modelStore = createSlice({
                         id:2,
                         name:{
                             content:"end",
-                            x:250,
-                            y:100
+                            x:500,
+                            y:200
                         },
                         invariant:{
                             content:"x<=k",

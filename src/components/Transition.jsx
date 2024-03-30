@@ -69,8 +69,11 @@ const Transition = (props) => {
           fill='none'
           markerEnd="url(#arrow)"
           onClick={(e)=>{
-            dispatch(setOpenTransition(transition))
-            dispatch(setTransitionOpen(true))
+            if(selectedTool==='select'){
+              dispatch(setOpenTransition(transition))
+              dispatch(setTransitionOpen(true))
+            }
+            
           }}
         />
       </>

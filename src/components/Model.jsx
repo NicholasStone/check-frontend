@@ -16,15 +16,15 @@ function Model(){
     
     //view model
     function updateModel(){
-      console.log(locations,transitions);
         const tmpLocations = locations.map(location=><Location key={location.id} location={location} init={location.id===init}/>)
         const tmpTransitions = transitions.map(transition=><Transition key={transition.id} transition={transition}/>)
         return [...tmpLocations,tmpTransitions]
     }
 
     function addLocation(x1,y1){
+      const preId = locations.length===0?0:locations[locations.length-1].id
       const location = {
-        id:locations[locations.length-1].id+1,
+        id:preId+1,
         name:{
           content:'',
           x:x1,
@@ -45,13 +45,11 @@ function Model(){
     }
 
     function addTransition(){
-      console.log(clickedLocation);
-      console.log(points);
+      const preId = transitions.length===0?0:transitions[transitions.length-1].id
       const sourceLocation = locations.find(location=>location.id===clickedLocation[0])
       const targetLocation = locations.find(location=>location.id===clickedLocation[1])
-      console.log(sourceLocation,targetLocation);
       const transition = {
-        id:transitions[transitions.length-1].id+1,
+        id:preId+1,
         sourceId:sourceLocation.id,
         targetId:targetLocation.id,
         nails:points,
