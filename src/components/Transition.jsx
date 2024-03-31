@@ -1,11 +1,16 @@
-import React from 'react';
+import { useRef } from 'react';
 import Draggable from 'react-draggable';
 import { useDispatch, useSelector } from 'react-redux';
 import { setOpenTransition, setTransitionOpen } from '../store/modules/editor/drawer';
+import { updateAutosTransition } from '../store/modules/editor/model';
 
 const Transition = (props) => {
   const dispatch = useDispatch()
   const {transition} = props
+  const selectRef = useRef(null)
+  const guardRef = useRef(null)
+  const syncRef = useRef(null)
+  const updateRef = useRef(null)
   const {selectedTool} = useSelector(state=>state.bar)
   const {locations} = useSelector(state=>state.model.autos[0])
   const locationPairs = findLocationPairs(locations)
@@ -31,6 +36,28 @@ const Transition = (props) => {
     arr.push(locationPairs[1].x-xDir*xOffset,locationPairs[1].y-yDir*yOffset)
     return arr;
   }
+  function getOffset(ref){
+    const match = ref.current.getAttribute('transform').match(/translate\(([^,]+),\s*([^)]+)\)/)
+    const x = parseInt(match[1])
+    const y = parseInt(match[2])
+    return [x,y]
+  }
+  function afterSelectDrag() {
+    const tmp = getOffset(selectRef)
+    dispatch(updateAutosTransition({...transition,select:{...transition.select,x:transition.select.x+tmp[0],y:transition.select.y+tmp[1]}}))
+  }
+  function afterGuardDrag() {
+    const tmp = getOffset(guardRef)
+    dispatch(updateAutosTransition({...transition,guard:{...transition.guard,x:transition.guard.x+tmp[0],y:transition.guard.y+tmp[1]}}))
+  }
+  function afterSyncDrag() {
+    const tmp = getOffset(syncRef)
+    dispatch(updateAutosTransition({...transition,sync:{...transition.sync,x:transition.sync.x+tmp[0],y:transition.sync.y+tmp[1]}}))
+  }
+  function afterUpdateDrag() {
+    const tmp = getOffset(updateRef)
+    dispatch(updateAutosTransition({...transition,update:{...transition.update,x:transition.update.x+tmp[0],y:transition.update.y+tmp[1]}}))
+  }
   return (
       <>
         <defs>
@@ -47,20 +74,20 @@ const Transition = (props) => {
         </marker>
         </defs>
         {/* select */}
-        <Draggable onStart={()=>selectedTool==='select'}>
-        <text x={transition.select.x} y={transition.select.y} fill='#FFCC00' textAnchor='start'>{transition.select.content}</text>
+        <Draggable onStart={()=>selectedTool==='select'} onStop={afterSelectDrag} position={{x:0,y:0}}>
+        <text ref={selectRef} x={transition.select.x} y={transition.select.y} fill='#FFCC00'>{transition.select.content}</text>
         </Draggable>
         {/* guard */}
-        <Draggable onStart={()=>selectedTool==='select'}>
-        <text x={transition.guard.x} y={transition.guard.y} fill='#66CC66' textAnchor='start'>{transition.guard.content}</text>
+        <Draggable onStart={()=>selectedTool==='select'} onStop={afterGuardDrag} position={{x:0,y:0}}>
+        <text ref={guardRef} x={transition.guard.x} y={transition.guard.y} fill='#66CC66'>{transition.guard.content}</text>
         </Draggable>
         {/* sync */}
-        <Draggable onStart={()=>selectedTool==='select'}>
-        <text x={transition.sync.x} y={transition.sync.y} fill='#33CCFF' textAnchor='start'>{transition.sync.content}</text>
+        <Draggable onStart={()=>selectedTool==='select'} onStop={afterSyncDrag} position={{x:0,y:0}}>
+        <text ref={syncRef} x={transition.sync.x} y={transition.sync.y} fill='#33CCFF'>{transition.sync.content}</text>
         </Draggable>
         {/* update */}
-        <Draggable onStart={()=>selectedTool==='select'}>
-        <text x={transition.update.x} y={transition.update.y} fill='#0000FF' textAnchor='start'>{transition.update.content}</text>
+        <Draggable onStart={()=>selectedTool==='select'} onStop={afterUpdateDrag} position={{x:0,y:0}}>
+        <text ref={updateRef} x={transition.update.x} y={transition.update.y} fill='#0000FF'>{transition.update.content}</text>
         </Draggable>
         {/* arrow */}
         <polyline
