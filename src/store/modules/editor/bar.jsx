@@ -6,6 +6,7 @@ const barStore = createSlice({
         selectedMode: "editor",
         selectedTool: "",
         selectedMenuItem: "model",
+        zoom:1
     },
     reducers: {
         setSelectedMode(state, action) {
@@ -17,18 +18,21 @@ const barStore = createSlice({
         },
         setSelectedMenuItem(state, action) {
             state.selectedMenuItem = action.payload
+        },
+        setZoom(state, action) {
+            state.zoom = action.payload
         }
     }
 })
 
 //解构出actionCreater
 
-const { setSelectedMode,setSelectedTool,setSelectedMenuItem} = barStore.actions
+const { setSelectedMode,setSelectedTool,setSelectedMenuItem,setZoom} = barStore.actions
 
 //获取reducer函数
 
 const barReducer = barStore.reducer
 
-export { setSelectedMode,setSelectedTool,setSelectedMenuItem}
+export { setSelectedMode,setSelectedTool,setSelectedMenuItem,setZoom}
 
 export default barReducer

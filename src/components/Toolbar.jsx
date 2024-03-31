@@ -2,13 +2,13 @@ import { Button, ConfigProvider, Divider, Tooltip } from "antd"
 import IconFont from "../utils/IconFont"
 import { useDispatch, useSelector } from "react-redux"
 import { useRef } from "react"
-import { setSelectedTool } from "../store/modules/editor/bar"
+import { setSelectedTool, setZoom } from "../store/modules/editor/bar"
 import { setAutos, setDeclaration, setSystemDeclaration } from "../store/modules/editor/model"
 function Toolbar() {
     const dispatch = useDispatch()
     const toolBtnRef = useRef(null)
     const fileInputRef = useRef(null);
-    const { selectedMode,selectedTool } = useSelector(state => state.bar)
+    const { selectedMode,selectedTool,zoom } = useSelector(state => state.bar)
     const {declaration,autos,systemDeclaration} = useSelector(state=>state.model)
     const onToolPress = () => {
         const id = toolBtnRef.current.id
@@ -53,6 +53,22 @@ function Toolbar() {
             reader.readAsText(file);
         }
     }
+
+    const handleZoomIn = ()=>{
+        document.body.style.zoom = zoom+0.1
+        dispatch(setZoom(zoom+0.1))
+    }
+
+    const handleZoomOut = ()=>{
+        document.body.style.zoom = zoom-0.1
+        dispatch(setZoom(zoom-0.1))
+    }
+
+    const handleZoomFit = ()=>{
+        document.body.style.zoom = 1
+        dispatch(setZoom(1))
+    }
+
     return (
         <div style={{ padding: '12px' }}>
             <input
@@ -70,47 +86,47 @@ function Toolbar() {
                     },
                 }}
             >
-                {/* 第一组 */}
+                {/* first group*/}
                 <ConfigProvider>
                     <Tooltip title={<span>新建</span>}>
-                    <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-create" />}></Button>
+                    <Button id="createBtn" type="text" icon={<IconFont type="icon-create" />}></Button>
                     </Tooltip>
                     <Tooltip title={<span>打开</span>}>
-                        <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-open-copy" />} onClick={() => fileInputRef.current.click()}></Button>
+                        <Button id="openBtn" type="text" icon={<IconFont type="icon-open-copy" />} onClick={() => fileInputRef.current.click()}></Button>
                     </Tooltip>
                     <Tooltip title={<span>保存</span>}>
-                        <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-save-copy" />} onClick={onSaveClicked}></Button>
+                        <Button id="saveBtn" type="text" icon={<IconFont type="icon-save-copy" />} onClick={onSaveClicked}></Button>
                     </Tooltip>
                     <Divider style={{ backgroundColor: 'black' }} type="vertical" />
                 </ConfigProvider>
 
-                {/* 第二组 */}
+                {/* second group*/}
                 <ConfigProvider componentDisabled={selectedMode==='editor'?false:true}>
-                    <Tooltip title={<span>撤销上次动作</span>}>
-                    <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-back-arrow" />}></Button>
+                    {/* <Tooltip title={<span>撤销上次动作</span>}>
+                    <Button id="retrieveBtn" type="text" icon={<IconFont type="icon-back-arrow" />}></Button>
                     </Tooltip>
                     <Tooltip title={<span>重做上次动作</span>}>
-                        <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-forward-arrow" />}></Button>
-                    </Tooltip>
-                    <Divider style={{ backgroundColor: 'black' }} type="vertical" />
+                        <Button id="redoBtn" type="text" icon={<IconFont type="icon-forward-arrow" />}></Button>
+                    </Tooltip> */}
+                    {/* <Divider style={{ backgroundColor: 'black' }} type="vertical" /> */}
                     <Tooltip title={<span>适合窗口</span>}>
-                        <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-zoom-fit" />}></Button>
+                        <Button id="zoomFitBtn" type="text" icon={<IconFont type="icon-zoom-fit" />} onClick={handleZoomFit}></Button>
                     </Tooltip>
                 </ConfigProvider>
 
                 
-                {/* 第三组 */}
+                {/* third group */}
                 <ConfigProvider componentDisabled={selectedMode==='verifier'?true:false}>
                     <Tooltip title={<span>放大</span>}>
-                    <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-zoom-in" />}></Button>
+                    <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-zoom-in" />} onClick={handleZoomIn}></Button>
                     </Tooltip>
                     <Tooltip title={<span>缩小</span>}>
-                        <Button id="zoomOutBtn" type="text" icon={<IconFont type="icon-zoom-out" />}></Button>
+                        <Button id="zoomOutBtn" type="text" icon={<IconFont type="icon-zoom-out" />} onClick={handleZoomOut}></Button>
                     </Tooltip>
                 </ConfigProvider>
                 
 
-                {/* 第四组 */}
+                {/* fourth group */}
                 <ConfigProvider componentDisabled={selectedMode==='editor'?false:true}>
                     <Divider style={{ backgroundColor: 'black' }} type="vertical" />
                     <Tooltip title={<span>选择工具</span>}>

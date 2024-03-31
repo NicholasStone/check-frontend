@@ -83,7 +83,7 @@ function Model(){
     return(
       <>
         <svg 
-        style={{width:'100%', height:'500px'}} 
+        style={{width:'100%', height:'1000px'}} 
         onClick={
           (e)=>{
             if(selectedTool==='location'){

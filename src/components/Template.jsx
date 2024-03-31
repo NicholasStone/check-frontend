@@ -13,7 +13,7 @@ function Template() {
     } = theme.useToken();
     return (
         <Layout>
-            <Header style={{ background: colorBgContainer }}>
+            <Header style={{ background: colorBgContainer}}>
                 名字 :<Input style={{ width: '10%', margin: '12px' }} value={name} 
                 onChange={(e) =>{dispatch(setAutosName(e.target.value))}} />
                 参数 :<Input style={{ width: '20%', margin: '12px' }} value={parameters}
@@ -23,7 +23,7 @@ function Template() {
                 style={{
                     margin: '24px 16px',
                     position:'relative',
-                    // width:'1390px',
+                    minWidth:'1100px',
                     minHeight: '500px',
                     background: colorBgContainer,
                     borderRadius: borderRadiusLG,

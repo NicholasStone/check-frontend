@@ -15,7 +15,7 @@ function EditorPanel() {
   const {declaration,autos,systemDeclaration} = useSelector(state=>state.model)
   const {selectedMenuItem} = useSelector(state=>state.bar)
   return (
-    <Layout style={{ padding: '12px' }}>
+    <Layout style={{ padding: '12px', minWidth:'1400px'}}>
       <Sider theme='light'>
         <Menu
           mode="inline"
@@ -54,7 +54,7 @@ function EditorPanel() {
           }}
         />
       </Sider>
-      <Content style={{ padding: '12px' }}>
+      <Content style={{ padding: '12px', minWidth:'1200px'}}>
         {selectedMenuItem==="global_declaration"&&<Declaration type={selectedMenuItem} declaration={declaration}/>}
         {(selectedMenuItem==="model"||selectedMenuItem==="local_declaration")&&<Template/>}
         {selectedMenuItem==="system_declaration"&&<Declaration type={selectedMenuItem} declaration={systemDeclaration}/>}
