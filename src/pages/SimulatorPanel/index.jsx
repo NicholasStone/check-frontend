@@ -74,7 +74,7 @@ function SimulatorPanel() {
         }}>
           <Layout>
             <Sider theme='light' style={{ marginRight: 8, minHeight: 700 }}></Sider>
-            <Content style={{
+            {/* <Content style={{
               //   padding: 24,
               minHeight: 772,
               background: colorBgContainer,
@@ -82,15 +82,14 @@ function SimulatorPanel() {
               width: '70%'
             }}>
               Content1
-            </Content>
+            </Content> */}
             <Content style={{
               //   padding: 24,
               minHeight: 772,
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
-              width: '30%'
             }}>
-              Content2
+      
             </Content>
 
           </Layout>

@@ -4,6 +4,7 @@ import { createBrowserRouter } from "react-router-dom";
 import EditorPanel from "../pages/EditorPanel";
 import SimulatorPanel from "../pages/SimulatorPanel";
 import VerifierPanel from "../pages/VerifierPanel";
+import LustrePanel from "../pages/LustrePanel";
 import App from "../App";
 
 //配置路由实例
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
                 element: <VerifierPanel />
             }
         ]
+    },
+    {
+        path:'/lustre',
+        element:<LustrePanel/>
     }
 ])
 

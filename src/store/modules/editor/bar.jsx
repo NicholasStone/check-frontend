@@ -9,6 +9,7 @@ const barStore = createSlice({
         zoom:1
     },
     reducers: {
+        //editor simulator verifier
         setSelectedMode(state, action) {
             state.selectedMode = action.payload
         },

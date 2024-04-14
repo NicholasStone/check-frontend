@@ -14,25 +14,25 @@ const modelStore = createSlice({
                         name:{
                             content:"start",
                             x:250,
-                            y:100
+                            y:170
                         },
                         invariant:{
                             content:"",
                             x:250,
-                            y:100
+                            y:200
                         },
                         x:250,
-                        y:100,
+                        y:200,
                     },
                     {
                         id:2,
                         name:{
                             content:"end",
                             x:500,
-                            y:200
+                            y:170
                         },
                         invariant:{
-                            content:"x<=k",
+                            content:"",
                             x:500,
                             y:100
                         },
@@ -47,22 +47,22 @@ const modelStore = createSlice({
                         targetId:2,
                         nails:[],
                         select:{
-                            content:"select",
+                            content:"",
                             x:270,
                             y:90
                         },
                         guard:{
-                            content:"id == 0",
+                            content:"",
                             x:270,
                             y:90
                         },
                         sync:{
-                            content:"sync",
+                            content:"",
                             x:270,
                             y:90
                         },
                         update:{
-                            content:"x = 0",
+                            content:"",
                             x:450,
                             y:90
                         }

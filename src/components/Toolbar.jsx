@@ -19,8 +19,8 @@ function Toolbar() {
     const onSaveClicked = ()=>{
         const jsonData = {
             declaration: declaration,
-            autos: autos,
-            systemDeclaration: systemDeclaration
+            automatons: autos,
+            system_declaration: systemDeclaration
           };
       
           const jsonString = JSON.stringify(jsonData, null, 2);
@@ -43,12 +43,21 @@ function Toolbar() {
         if (file) {
             const reader = new FileReader();
             reader.onload = (event) => {
+                console.log(event.target.result);
                 const jsonData = JSON.parse(event.target.result)
-                // console.log('Imported JSON data:', jsonData);
-                const {declaration,autos,systemDeclaration} = jsonData
-                dispatch(setDeclaration(declaration))
-                dispatch(setAutos(autos))
-                dispatch(setSystemDeclaration(systemDeclaration))
+                console.log('Imported JSON data:', jsonData);
+                // const {declaration,autos,systemDeclaration} = jsonData
+                dispatch(setDeclaration(jsonData.declaration))
+                dispatch(setSystemDeclaration(jsonData.system_declaration))
+                let tmpAutos = jsonData.automatons
+                console.log(tmpAutos[0].locations[0],"before transform");
+                if(tmpAutos[0].locations[0].x===undefined){
+                    transformAutos(tmpAutos)
+                }
+                console.log(tmpAutos,"after transform");
+                // dispatch(setDeclaration(declaration))
+                dispatch(setAutos(tmpAutos))
+                // dispatch(setSystemDeclaration(systemDeclaration))
             };
             reader.readAsText(file);
         }
@@ -69,6 +78,38 @@ function Toolbar() {
         dispatch(setZoom(1))
     }
 
+    const transformAutos = (autos)=>{
+        autos[0].locations = autos[0].locations.map((location)=>{
+            //add geo
+            location.x = 100
+            location.y = 100
+            //transform name&invariant
+            const tmpName = {content:location.name,x:100,y:100}
+            location.name = tmpName
+            const invariant = {content:location.invariant,x:100,y:100}
+            location.invariant = invariant
+            return location
+        })
+        autos[0].transitions = autos[0].transitions.map((transition)=>{
+            //change property name
+            transition.sourceId = transition.source_id
+            transition.targetId = transition.target_id
+            delete transition.source_id
+            delete transition.target_id
+            //add nails
+            transition.nails = []
+            //transform select guard sync update
+            const tmpSelect = {content:transition.select,x:100,y:100}
+            transition.select = tmpSelect
+            const tmpGuard = {content:transition.guard,x:100,y:100}
+            transition.guard = tmpGuard
+            const tmpSync = {content:transition.sync,x:100,y:100}
+            transition.sync = tmpSync
+            const tmpUpdate = {content:transition.update,x:100,y:100}
+            transition.update = tmpUpdate
+            return transition
+        })
+    }
     return (
         <div style={{ padding: '12px' }}>
             <input
