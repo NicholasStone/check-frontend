@@ -1,45 +1,43 @@
-import { Input, Layout } from "antd"
-import { useState } from "react"
+import { Layout } from "antd"
 import { setAutosDeclaration, setDeclaration, setSystemDeclaration } from "../store/modules/editor/model"
 import { useDispatch } from "react-redux"
-
-function Declaration(props){
+import { Editor } from "@monaco-editor/react"
+function Declaration(props) {
     const dispatch = useDispatch()
-    const {TextArea} = Input
     // const [value,setValue] = useState(props.declaration)
-    const {type,declaration} = props
-
-    return(
+    const { type, declaration } = props
+    return (
         <Layout>
-            <TextArea style={{
-                resize:'none',
-                height: 600,
-                }}
+            <div style={{height:'600px'}}>
+                <Editor 
+                language="go" 
                 value={declaration}
-                onChange={(e)=>{
-                    const newValue = e.target.value
+                onChange={(newValue) => {
+                    console.log(newValue);
                     // setValue(newValue)
-                    switch(type){
-                        case "global_declaration":{
+                    switch (type) {
+                        case "global_declaration": {
                             dispatch(setDeclaration(newValue))
                             break
                         }
-                        case "system_declaration":{
+                        case "system_declaration": {
                             dispatch(setSystemDeclaration(newValue))
                             break
                         }
-                        case "local_declaration":{
+                        case "local_declaration": {
                             dispatch(setAutosDeclaration(newValue))
                             break
                         }
-                        default:break
+                        default: break
                     }
-                     console.log(declaration);
-                    }}>
-            </TextArea>
+                    console.log(declaration);
+                }}
+                />
+            </div>
+            
         </Layout>
-        
-        
+
+
     )
 }
 
