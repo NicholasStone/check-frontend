@@ -47,11 +47,12 @@ function VerifierPanel() {
         if(selectedRow===undefined){
             return
         }
-        // get result fromback-end
-        const newRes = 'true'
+        // get result from back-end
+        let newRes = 'false'
         const newProperties = properties.map(property=>{
             if(property.id===selectedRow){
                 const tmp = {...property}
+                newRes = selectedRow===1?'false':'true'
                 tmp.result = newRes
                 return tmp
             }
