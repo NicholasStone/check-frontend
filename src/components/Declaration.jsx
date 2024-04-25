@@ -1,8 +1,9 @@
 import { Layout } from "antd"
 import { setAutosDeclaration, setDeclaration, setSystemDeclaration } from "../store/modules/editor/model"
 import { useDispatch } from "react-redux"
-import { Editor } from "@monaco-editor/react"
+import { Editor,loader } from "@monaco-editor/react"
 function Declaration(props) {
+    loader.config({paths:{vs:'/min/vs'}})
     const dispatch = useDispatch()
     // const [value,setValue] = useState(props.declaration)
     const { type, declaration } = props
