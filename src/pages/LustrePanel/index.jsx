@@ -124,7 +124,7 @@ function LustrePanel(){
                 <Button style={{float:'left'}} size="large" onClick={()=>setValue(JSON.stringify(outputJson))}>状态机验证</Button>
                 <Button style={{float:'right'}} size="large" onClick={()=>setValue(outputResult)}>数据流验证</Button>
             </div>
-            <TextArea style={{resize:'none',height:'600px'}}></TextArea>
+            <TextArea style={{resize:'none',height:'600px'}} placeholder="在这里输入SynLong代码"></TextArea>
         </Flex>
         <ConfigProvider
             theme={{
@@ -133,7 +133,7 @@ function LustrePanel(){
                 },
             }}
         >
-            <Card style={{width:'50%', whiteSpace:'pre-wrap'}}>{value}</Card>
+            <Card style={{width:'50%', whiteSpace:'pre-wrap'}} title="转化/验证结果">{value}</Card>
         </ConfigProvider>
         
         
