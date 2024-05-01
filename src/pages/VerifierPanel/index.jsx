@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setProperties } from '../../store/modules/verifier/property';
 import Signal from '../../components/Signal';
+import { request } from '../../utils/request';
 const {Sider, Content } = Layout
 
 function VerifierPanel() {
@@ -12,7 +13,7 @@ function VerifierPanel() {
     } = theme.useToken();
     const {TextArea} = Input
     const [type,setType] = useState('property')
-
+    const {id} = useSelector(state=>state.model.id)
     // propertyContent、propertyNote、verifyRes just for view
     const [propertyContent,setPropertyContent] = useState('')
     const [propertyNote,setPropertyNote] = useState('')
@@ -21,7 +22,7 @@ function VerifierPanel() {
     const oTypeValue = {'property':'性质','note':'备注'}
     const [api, contextHolder] = notification.useNotification();
     const openNotification = (res) => {
-        if(res==='true'){
+        if(res.code===200){
             api.success({
                 message: "验证结果",
                 description: "满足该性质",
@@ -31,7 +32,7 @@ function VerifierPanel() {
         else{
             api.error({
                 message: "验证结果",
-                description: "不满足该性质",
+                description: res.message,
                 duration:5,
             });
         }
@@ -43,16 +44,19 @@ function VerifierPanel() {
         setPropertyContent(item.content)
         setPropertyNote(item.note)
       }
-      function onVerifyBtnClicked(){
+      async function onVerifyBtnClicked(){
         if(selectedRow===undefined){
             return
         }
         // get result from back-end
+        const body = {id:id,property:propertyContent}
+        console.log(body);
+        const res = await request.post('/verify',body)
         let newRes = 'false'
         const newProperties = properties.map(property=>{
             if(property.id===selectedRow){
                 const tmp = {...property}
-                newRes = selectedRow===1?'false':'true'
+                newRes = res.code===200?'true':'false'
                 tmp.result = newRes
                 return tmp
             }
@@ -62,7 +66,7 @@ function VerifierPanel() {
             
         })
         dispatch(setProperties(newProperties))
-        openNotification(newRes)
+        openNotification(res)
       }
       function onAddBtnClicked(){
         setPropertyContent('')

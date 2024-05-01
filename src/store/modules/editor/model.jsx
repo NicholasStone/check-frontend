@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const modelStore = createSlice({
     name: "model",
     initialState: {
+        id:'',
         declaration: "//Place global declarations here.",
         autos:[
             {
@@ -75,6 +76,9 @@ const modelStore = createSlice({
         systemDeclaration:"// Place template instantiations here.\nProcess = Template();\n// List one or more processes to be composed into a system.\nsystem Process;"
     },
     reducers: {
+        setId(state, action) {
+            state.id = action.payload
+        },
         setDeclaration(state, action) {
             state.declaration = action.payload
         },
@@ -139,6 +143,7 @@ const modelStore = createSlice({
 //解构出actionCreater
 
 const {
+    setId,
     setDeclaration,
     setAutos,
     setAutosName,
@@ -159,6 +164,7 @@ const {
 const modelReducer = modelStore.reducer
 
 export { 
+    setId,
     setDeclaration,
     setAutos,
     setAutosName,
