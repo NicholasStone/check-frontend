@@ -57,6 +57,8 @@ function VerifierPanel() {
             if(property.id===selectedRow){
                 const tmp = {...property}
                 newRes = res.code===200?'true':'false'
+                //remove this line when server done
+                if(selectedRow === 1) newRes = 'false'
                 tmp.result = newRes
                 return tmp
             }
