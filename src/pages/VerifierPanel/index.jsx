@@ -13,7 +13,7 @@ function VerifierPanel() {
     } = theme.useToken();
     const {TextArea} = Input
     const [type,setType] = useState('property')
-    const {id} = useSelector(state=>state.model.id)
+    const {id} = useSelector(state=>state.model)
     // propertyContent、propertyNote、verifyRes just for view
     const [propertyContent,setPropertyContent] = useState('')
     const [propertyNote,setPropertyNote] = useState('')
