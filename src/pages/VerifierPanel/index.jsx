@@ -21,23 +21,23 @@ function VerifierPanel() {
     const [selectedRow,setSelectedRow] = useState()
     const oTypeValue = {'property':'性质','note':'备注'}
     const [api, contextHolder] = notification.useNotification();
-    const openNotification = (res) => {
-        if(res==='true'){
+    const openNotification = (res,message) => {
+        if(res === 'true'){
             api.success({
-                message: "验证结果",
-                description: "满足该性质",
-                duration:5,
+            message: "验证结果",
+            description: message,
+            duration:5,
             });
         }
         else{
             api.error({
                 message: "验证结果",
-                description: "不满足该性质",
+                description: message,
                 duration:5,
             });
         }
-        
-      };
+            
+    }
 
       function onRowClicked(item){
         setSelectedRow(item.id)
@@ -56,8 +56,9 @@ function VerifierPanel() {
         const newProperties = properties.map(property=>{
             if(property.id===selectedRow){
                 const tmp = {...property}
-                newRes = res.code===200?'true':'false'
-                //remove this line when server done
+                newRes = (res.code===200&&res.data.result===true)
+                    ?'true':'false'
+                //should be deleted later
                 if(selectedRow === 1) newRes = 'false'
                 tmp.result = newRes
                 return tmp
@@ -68,7 +69,9 @@ function VerifierPanel() {
             
         })
         dispatch(setProperties(newProperties))
-        openNotification(newRes)
+        //should be deleted later
+        if(selectedRow === 1) openNotification(newRes,"SUCCESS")
+        else openNotification(newRes,res.message)
       }
       function onAddBtnClicked(){
         setPropertyContent('')
