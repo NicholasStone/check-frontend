@@ -22,7 +22,7 @@ function VerifierPanel() {
     const oTypeValue = {'property':'性质','note':'备注'}
     const [api, contextHolder] = notification.useNotification();
     const openNotification = (res) => {
-        if(res.code===200){
+        if(res==='true'){
             api.success({
                 message: "验证结果",
                 description: "满足该性质",
@@ -32,7 +32,7 @@ function VerifierPanel() {
         else{
             api.error({
                 message: "验证结果",
-                description: res.message,
+                description: "不满足该性质",
                 duration:5,
             });
         }
@@ -68,7 +68,7 @@ function VerifierPanel() {
             
         })
         dispatch(setProperties(newProperties))
-        openNotification(res)
+        openNotification(newRes)
       }
       function onAddBtnClicked(){
         setPropertyContent('')
