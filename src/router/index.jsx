@@ -16,7 +16,11 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <EditorPanel />
+                element: <LustrePanel />
+            },
+            {
+                path: '/lustre',
+                element: <LustrePanel />
             },
             {
                 path: 'editor',
@@ -32,10 +36,10 @@ const router = createBrowserRouter([
             }
         ]
     },
-    {
-        path:'/lustre',
-        element:<LustrePanel/>
-    }
+    // {
+    //     path:'/lustre',
+    //     element:<LustrePanel/>
+    // }
 ])
 
 export default router

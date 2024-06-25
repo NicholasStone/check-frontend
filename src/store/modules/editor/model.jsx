@@ -4,11 +4,11 @@ const modelStore = createSlice({
     name: "model",
     initialState: {
         id:'',
-        declaration: "//Place global declarations here.",
+        declaration: "// 在这里编写全局变量、函数等.",
         autos:[
             {
                 name:"Template",
-                parameters:"int id",
+                parameters:"id int",
                 locations:[
                     {
                         id:1,
@@ -70,10 +70,10 @@ const modelStore = createSlice({
                     },
                 ],//id source_id target_id guard update
                 init:1,
-                declaration:"// Place local declarations here."
+                declaration:"// 在这里编写局部变量、函数等."
             }
         ],
-        systemDeclaration:"// Place template instantiations here.\nProcess = Template();\n// List one or more processes to be composed into a system.\nsystem Process;"
+        systemDeclaration:"// 在这里填写模型的声明.\nProcess = Template();\nsystem Process;"
     },
     reducers: {
         setId(state, action) {

@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const barStore = createSlice({
     name: "bar",
     initialState: {
-        selectedMode: "editor",
+        selectedMode: "lustre",
         selectedTool: "",
         selectedMenuItem: "model",
         zoom:1

@@ -1,7 +1,8 @@
-import { Button,Flex,Input,Card,ConfigProvider,notification } from "antd"
+import {Button, Flex, Input, Card, ConfigProvider, notification, theme, Layout, Space, Slider, Divider} from "antd"
 import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { request } from "../../utils/request"
+import IconFont from "../../utils/IconFont";
 
 function LustrePanel(){
     const synlongRef = useRef(null)
@@ -46,32 +47,33 @@ function LustrePanel(){
       }
     }
     return(
-        <>
-        {contextHolder}   
-        <Button onClick={()=>{navigate('/editor')}}>返回</Button>
-        <Flex style={{margin:'36px 120px'}} gap='large'>
-        <Flex vertical style={{width:'50%'}} gap='middle'>
-            <div>
-                <Button style={{float:'left'}} size="large" onClick={convertToJson}>状态机验证</Button>
-                <Button style={{float:'right'}} size="large" onClick={checkDataFlow}>数据流验证</Button>
-            </div>
-            <TextArea ref={synlongRef} style={{resize:'none',height:'600px'}} placeholder="在这里输入SynLong代码"></TextArea>
-        </Flex>
-        <ConfigProvider
-            theme={{
-                token: {
-                    colorBorderSecondary:'#d9d9d9'
-                },
-            }}
-        >
-            <Card style={{width:'50%', whiteSpace:'pre-wrap'}} title="转化/验证结果">{value}</Card>
-        </ConfigProvider>
-        
-        
-        </Flex>
-        </>
+        <Layout style={{ padding: '12px' }}>
+            <Layout>
+                {contextHolder}
+                {/*<Button onClick={()=>{navigate('/editor')}}>返回</Button>*/}
+                <Flex style={{margin:'1px 1px'}} gap='large'>
+                    <Flex vertical style={{width:'50%'}} gap='middle'>
+                        <div>
+                            <Button style={{float:'left'}} size="large" onClick={convertToJson}>状态机转化</Button>
+                            <Button style={{float:'right'}} size="large" onClick={checkDataFlow}>数据流验证</Button>
+                        </div>
+                        <TextArea ref={synlongRef} style={{resize:'vertical',height:'650px'}} placeholder="在这里输入SynLong代码，再点击对应的按钮进行转化或者验证"></TextArea>
+                    </Flex>
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                colorBorderSecondary:'#d9d9d9'
+                            },
+                        }}
+                    >
+                        <Card style={{width:'50%', whiteSpace:'pre-wrap'}} title="转化/验证结果">{value}</Card>
+                    </ConfigProvider>
 
-    
+                </Flex>
+
+            </Layout>
+
+        </Layout>
     )
 }
 

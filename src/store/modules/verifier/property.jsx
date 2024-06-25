@@ -6,7 +6,7 @@ const propertyStore = createSlice({
         properties:[
             {
                 id:1,
-                content:'A[] forall (i:id_t) forall (j:id_t) P(i).cs && P(j).cs imply i == j',
+                content:'E<> P.cs imply i == j',
                 note:'Mutex requirement.',
                 result:'unknown'
             },
@@ -16,12 +16,6 @@ const propertyStore = createSlice({
                 note:'The system is deadlock free.',
                 result:'unknown'
             },
-            {
-                id:3,
-                content:'P(1).req --> P(1).wait',
-                note:'Whenever P(1) requests access to the critical section it will eventually enter the wait state.',
-                result:'unknown'
-            }
         ]
     },
     reducers: {
