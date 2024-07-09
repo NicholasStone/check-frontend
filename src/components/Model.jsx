@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect, useState } from "react"
 import Location from "./Location"
 import Transition from "./Transition"
 import { addAutosLocation, addAutosTransition } from "../store/modules/editor/model"
@@ -83,7 +82,7 @@ function Model(){
     return(
       <>
         <svg 
-        style={{width:'100%', height:'1000px'}} 
+        style={{width:'100%', height:'800px'}}
         onClick={
           (e)=>{
             if(selectedTool==='location'){

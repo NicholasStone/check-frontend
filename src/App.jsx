@@ -1,17 +1,36 @@
-import { Flex } from 'antd'
 import Toolbar from './components/Toolbar'
-import Modebar from './components/Modebar'
-import { Outlet } from 'react-router-dom'
+import TopBar from './components/TopBar.jsx'
+import SideBar from './components/SideBar'
+import BottomBar from './components/BottomBar.jsx'
+import {Outlet} from 'react-router-dom'
+
+import {Layout, Flex} from 'antd';
+
 function App() {
+
   return (
-    <Flex vertical>
-      <Toolbar />
-      <Modebar />
+    <Layout >
+      <TopBar />
+      <SideBar />
+      <Layout style={{
+        overflow: 'auto',
+        position: 'absolute',
+        height: '80%',
+        width: "85%",
+        left: '14vw',
+        top: '7.5vh',
+        right: 0,
+        bottom: 0,
+      }}>
+        <Flex vertical>
+          <Toolbar />
+          <Outlet />
+        </Flex>
+      </Layout>
+      <BottomBar />
+    </Layout>
 
-      <Outlet />
-    </Flex>
-  )
-
+  );
 }
 
 export default App

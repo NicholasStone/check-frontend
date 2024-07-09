@@ -7,15 +7,11 @@ import Declaration from '../../components/Declaration';
 import { setSelectedMenuItem } from '../../store/modules/editor/bar';
 const { Sider, Content } = Layout
 function EditorPanel() {
-  // const [name, setName] = useState('Template')
-  // const {
-  //   token: { colorBgContainer, borderRadiusLG },
-  // } = theme.useToken();
   const dispatch = useDispatch()
   const {declaration,autos,systemDeclaration} = useSelector(state=>state.model)
   const {selectedMenuItem} = useSelector(state=>state.bar)
   return (
-    <Layout style={{ padding: '12px', minWidth:'1400px'}}>
+    <Layout style={{ padding: '5px', minWidth:'800px'}}>
       <Sider theme='light'>
         <Menu
           mode="inline"
@@ -54,7 +50,7 @@ function EditorPanel() {
           }}
         />
       </Sider>
-      <Content style={{ padding: '12px', minWidth:'1200px'}}>
+      <Content style={{ padding: '5px', minWidth:'800px'}}>
         {selectedMenuItem==="global_declaration"&&<Declaration type={selectedMenuItem} declaration={declaration}/>}
         {(selectedMenuItem==="model"||selectedMenuItem==="local_declaration")&&<Template/>}
         {selectedMenuItem==="system_declaration"&&<Declaration type={selectedMenuItem} declaration={systemDeclaration}/>}

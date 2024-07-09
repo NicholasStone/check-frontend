@@ -1,4 +1,4 @@
-import { Layout, Button, theme, Input, Flex, notification, List, message } from 'antd';
+import { Layout, Button, theme, Input, Flex, notification, List } from 'antd';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setProperties } from '../../store/modules/verifier/property';
@@ -26,14 +26,14 @@ function VerifierPanel() {
             if (res.data.result === true) {
                 api.success({
                     message: "验证结果",
-                    description: "满足该性质",
+                    description: String(res.data.result),
                     duration: 5,
                 });
             }
             else{
                 api.error({
                     message: "验证结果",
-                    description: "不满足该性质",
+                    description: String(res.data.result),
                     duration: 5,
                 });
             }
