@@ -1,6 +1,5 @@
 import {Button, Flex, Input, Card, ConfigProvider, notification, theme, Layout, Space, Slider, Divider} from "antd"
 import { useRef, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import { request } from "../../utils/request"
 
 function LustrePanel(){
@@ -20,7 +19,7 @@ function LustrePanel(){
       else{
         setValue("")
         api.error({
-          message: "验证结果",
+          message: "验证出错",
           description: res.message,
           duration:5,
         });
@@ -38,7 +37,7 @@ function LustrePanel(){
         else{
           setValue("")
           api.error({
-            message: "验证结果",
+            message: "转化出错",
             description: res.message,
             duration:5,
           });

@@ -129,37 +129,44 @@ function Toolbar() {
             >
                 {/* first group*/}
                 <ConfigProvider>
+                    <Tooltip title="新建">
+                        <Button id="createBtn" type="text" icon={<IconFont type="icon-create"/>}></Button>
+                    </Tooltip>
                     <Tooltip title={<span>新建</span>}>
-                    <Button id="createBtn" type="text" icon={<IconFont type="icon-create" />}></Button>
+                        <Button id="createBtn" type="text" icon={<IconFont type="icon-create"/>}></Button>
                     </Tooltip>
                     <Tooltip title={<span>打开</span>}>
-                        <Button id="openBtn" type="text" icon={<IconFont type="icon-open-copy" />} onClick={() => fileInputRef.current.click()}></Button>
+                        <Button id="openBtn" type="text" icon={<IconFont type="icon-open-copy"/>}
+                                onClick={() => fileInputRef.current.click()}></Button>
                     </Tooltip>
                     <Tooltip title={<span>保存</span>}>
-                        <Button id="saveBtn" type="text" icon={<IconFont type="icon-save-copy" />} onClick={onSaveClicked}></Button>
+                        <Button id="saveBtn" type="text" icon={<IconFont type="icon-save-copy"/>}
+                                onClick={onSaveClicked}></Button>
                     </Tooltip>
-                    <Divider style={{ backgroundColor: 'black' }} type="vertical" />
+                    <Divider style={{backgroundColor: 'black'}} type="vertical"/>
                 </ConfigProvider>
 
                 {/* second group*/}
-                <ConfigProvider componentDisabled={selectedMode==='editor'?false:true}>
-                    {/* <Tooltip title={<span>撤销上次动作</span>}>
-                    <Button id="retrieveBtn" type="text" icon={<IconFont type="icon-back-arrow" />}></Button>
+                <ConfigProvider componentDisabled={selectedMode !== 'editor' && selectedMode !== 'lustre'}>
+                    <Tooltip title={<span>撤销上次动作</span>}>
+                        <Button id="retrieveBtn" type="text" icon={<IconFont type="icon-back-arrow"/>}></Button>
                     </Tooltip>
                     <Tooltip title={<span>重做上次动作</span>}>
-                        <Button id="redoBtn" type="text" icon={<IconFont type="icon-forward-arrow" />}></Button>
-                    </Tooltip> */}
-                    {/* <Divider style={{ backgroundColor: 'black' }} type="vertical" /> */}
+                        <Button id="redoBtn" type="text" icon={<IconFont type="icon-forward-arrow"/>}></Button>
+                    </Tooltip>
+                    <Divider style={{backgroundColor: 'black'}} type="vertical"/>
                     <Tooltip title={<span>适合窗口</span>}>
-                        <Button id="zoomFitBtn" type="text" icon={<IconFont type="icon-zoom-fit" />} onClick={handleZoomFit}></Button>
+                        <Button id="zoomFitBtn" type="text" icon={<IconFont type="icon-zoom-fit"/>}
+                                onClick={handleZoomFit}></Button>
                     </Tooltip>
                 </ConfigProvider>
 
-                
+
                 {/* third group */}
-                <ConfigProvider componentDisabled={selectedMode==='verifier'?true:false}>
+                <ConfigProvider componentDisabled={selectedMode === 'verifier' ? true : false}>
                     <Tooltip title={<span>放大</span>}>
-                    <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-zoom-in" />} onClick={handleZoomIn}></Button>
+                        <Button id="zoomInBtn" type="text" icon={<IconFont type="icon-zoom-in"/>}
+                                onClick={handleZoomIn}></Button>
                     </Tooltip>
                     <Tooltip title={<span>缩小</span>}>
                         <Button id="zoomOutBtn" type="text" icon={<IconFont type="icon-zoom-out" />} onClick={handleZoomOut}></Button>

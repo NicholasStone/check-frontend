@@ -1,8 +1,5 @@
 import {
-    BarChartOutlined,
-    UploadOutlined,
-    UserOutlined,
-    VideoCameraOutlined,
+  NodeIndexOutlined, MoreOutlined, FunctionOutlined, ContainerOutlined,
 } from '@ant-design/icons';
 import {Layout, Menu} from 'antd';
 
@@ -12,22 +9,34 @@ function SideBar() {
   const items = [
     {
       key: 1,
-      icon: <UserOutlined />,
+      icon: <FunctionOutlined />,
       label: "Node",
+      children: [
+        { key: 'node_1', label: 'node_A', icon: <FunctionOutlined /> },
+        { key: 'node_2', label: 'node_B', icon: <FunctionOutlined /> },
+      ],
     },
     {
       key: 2,
-      icon: <VideoCameraOutlined />,
+      icon: <NodeIndexOutlined />,
       label: "StateMachine",
+      children: [
+        { key: 'stm_1', label: 'stm1', icon: <NodeIndexOutlined /> },
+        { key: 'stm_2', label: 'stm2', icon: <NodeIndexOutlined /> },
+      ],
     },
     {
       key: 3,
-      icon: <UploadOutlined />,
+      icon: <ContainerOutlined />,
       label: "Variable",
+      children: [
+        { key: 'var_1', label: 'v1', icon: <ContainerOutlined /> },
+        { key: 'var_2', label: 'v2', icon: <ContainerOutlined /> },
+      ],
     },
     {
       key: 4,
-      icon: <BarChartOutlined />,
+      icon: <MoreOutlined />,
       label: "Others",
     },
   ];

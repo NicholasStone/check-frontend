@@ -3,14 +3,17 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import {setSelectedMode} from "../store/modules/editor/bar.jsx";
+import {
+  FormOutlined, PlayCircleOutlined, FileTextOutlined, QuestionCircleOutlined,
+} from '@ant-design/icons';
 
 function TopBar() {
     const {Header} = Layout;
     const items = [
-        {key: 'lustre', label: 'SynLong'},
-        {key: 'editor', label: '编辑器'},
-        {key: 'verifier', label: '验证器'},
-        {key: 'simulator', label: '模拟器'},
+        {key: 'lustre', label: 'SynLong', icon: <FileTextOutlined />},
+        {key: 'editor', label: '编辑器', icon: <FormOutlined />},
+        {key: 'verifier', label: '验证器', icon: <QuestionCircleOutlined />},
+        {key: 'simulator', label: '模拟器', icon: <PlayCircleOutlined />},
     ];
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -22,7 +25,6 @@ function TopBar() {
 
     return (
       <Header
-        theme="dark"
         style={{
           overflow: 'auto',
           width: '100vw',
@@ -39,6 +41,7 @@ function TopBar() {
           style={{
             flex: 1,
             minWidth: 0,
+            background: 'linear-gradient(to right, lightblue, white)',// 渐变色
           }}
           onClick={(e) => {
             const mode = e.key;

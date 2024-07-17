@@ -8,7 +8,6 @@ import LustrePanel from "../pages/LustrePanel";
 import App from "../App";
 
 //配置路由实例
-
 const router = createBrowserRouter([
     {
         path: '/',
@@ -36,10 +35,6 @@ const router = createBrowserRouter([
             }
         ]
     },
-    // {
-    //     path:'/lustre',
-    //     element:<LustrePanel/>
-    // }
 ])
 
 export default router
