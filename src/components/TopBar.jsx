@@ -32,6 +32,7 @@ function TopBar() {
           left: 0,
           top: 0,
           right: 0,
+          background: 'linear-gradient(to right, lightblue, white)',// TODO: 这里有问题, 不加这句两边为什么有些黑色区域
         }}>
         <div className="demo-logo"/>
         <Menu

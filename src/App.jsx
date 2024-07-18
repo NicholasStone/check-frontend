@@ -15,8 +15,8 @@ function App() {
       <Layout style={{
         overflow: 'auto',
         position: 'absolute',
-        height: '80%',
-        width: "85%",
+        height: '86%',
+        width: "86%",
         left: '14vw',
         top: '7.5vh',
         right: 0,

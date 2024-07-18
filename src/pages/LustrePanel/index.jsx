@@ -53,7 +53,7 @@ function LustrePanel(){
                             <Button style={{float:'left'}} size="large" onClick={convertToJson}>状态机转化</Button>
                             <Button style={{float:'right'}} size="large" onClick={checkDataFlow}>数据流验证</Button>
                         </div>
-                        <TextArea ref={synlongRef} style={{resize:'vertical',height:'550px'}} placeholder="在这里输入SynLong代码，再点击对应的按钮进行转化或者验证"></TextArea>
+                        <TextArea ref={synlongRef} style={{resize:'vertical',height:'660px'}} placeholder="在这里输入SynLong代码，再点击对应的按钮进行转化或者验证"></TextArea>
                     </Flex>
                     <ConfigProvider
                         theme={{
