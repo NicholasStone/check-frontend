@@ -6,7 +6,6 @@ function SideBar() {
   const {Sider} = Layout;
 
   const {parsedItems} = useSelector(state => state.parsedItems); // 假设全局状态中存储的解析结果
-
   const items = [
     {
       key: 1,
