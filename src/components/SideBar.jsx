@@ -2,59 +2,71 @@ import {
   NodeIndexOutlined, MoreOutlined, FunctionOutlined, ContainerOutlined,
 } from '@ant-design/icons';
 import {Layout, Menu} from 'antd';
+import {useSelector} from 'react-redux';
 
 function SideBar() {
-    const { Sider} = Layout;
+  const {Sider} = Layout;
+
+  const {parsedItems} = useSelector(state => state.parsedItems); // 假设全局状态中存储的解析结果
 
   const items = [
     {
       key: 1,
-      icon: <FunctionOutlined />,
+      icon: <FunctionOutlined/>,
       label: "Node",
-      children: [
-        { key: 'node_1', label: 'node_A', icon: <FunctionOutlined /> },
-        { key: 'node_2', label: 'node_B', icon: <FunctionOutlined /> },
-      ],
+      children: parsedItems.nodes.map(node => ({
+        key: node.id,
+        label: node.name,
+        icon: <FunctionOutlined/>,
+      })),
     },
     {
       key: 2,
-      icon: <NodeIndexOutlined />,
+      icon: <NodeIndexOutlined/>,
       label: "StateMachine",
-      children: [
-        { key: 'stm_1', label: 'stm1', icon: <NodeIndexOutlined /> },
-        { key: 'stm_2', label: 'stm2', icon: <NodeIndexOutlined /> },
-      ],
+      children: parsedItems.stateMachines.map(stm => ({
+        key: stm.id,
+        label: stm.name,
+        icon: <NodeIndexOutlined/>,
+      })),
     },
     {
       key: 3,
-      icon: <ContainerOutlined />,
+      icon: <ContainerOutlined/>,
       label: "Variable",
-      children: [
-        { key: 'var_1', label: 'v1', icon: <ContainerOutlined /> },
-        { key: 'var_2', label: 'v2', icon: <ContainerOutlined /> },
-      ],
+      children: parsedItems.variables.map(variable => ({
+        key: variable.id,
+        label: variable.name,
+        icon: <ContainerOutlined/>,
+      })),
     },
     {
       key: 4,
-      icon: <MoreOutlined />,
+      icon: <MoreOutlined/>,
       label: "Others",
+      children: parsedItems.others.map(other => ({
+        key: other.id,
+        label: other.name,
+        icon: <ContainerOutlined/>,
+      })),
     },
   ];
 
   return (
-      <Sider
-        theme="light"
-        style={{
-            overflow: 'auto',
-            position: 'fixed',
-            left: 0,
-            top: '7.5vh',
-            bottom: 0,
-        }}
-      >
-          <div className="demo-logo-vertical"/>
-          <Menu mode="inline" defaultSelectedKeys={['1']} items={items}/>
-      </Sider>
-    );
+    <Sider
+      theme="light"
+      style={{
+        overflow: 'auto',
+        position: 'fixed',
+        left: 0,
+        top: '7.5vh',
+        bottom: 0,
+      }}
+    >
+      <div className="demo-logo-vertical"/>
+      <Menu mode="inline" defaultSelectedKeys={['1']} items={items}/>
+    </Sider>
+  );
 }
+
 export default SideBar
