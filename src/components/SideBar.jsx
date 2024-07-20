@@ -1,6 +1,4 @@
-import {
-  NodeIndexOutlined, MoreOutlined, FunctionOutlined, ContainerOutlined,
-} from '@ant-design/icons';
+import {ContainerOutlined, FunctionOutlined, MoreOutlined, NodeIndexOutlined,} from '@ant-design/icons';
 import {Layout, Menu} from 'antd';
 import {useSelector} from 'react-redux';
 

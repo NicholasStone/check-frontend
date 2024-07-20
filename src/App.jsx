@@ -4,14 +4,14 @@ import SideBar from './components/SideBar'
 import BottomBar from './components/BottomBar.jsx'
 import {Outlet} from 'react-router-dom'
 
-import {Layout, Flex} from 'antd';
+import {Flex, Layout} from 'antd';
 
 function App() {
 
   return (
-    <Layout >
-      <TopBar />
-      <SideBar />
+    <Layout>
+      <TopBar/>
+      <SideBar/>
       <Layout style={{
         overflow: 'auto',
         position: 'absolute',
@@ -23,11 +23,11 @@ function App() {
         bottom: 0,
       }}>
         <Flex vertical>
-          <Toolbar />
-          <Outlet />
+          <Toolbar/>
+          <Outlet/>
         </Flex>
       </Layout>
-      <BottomBar />
+      <BottomBar/>
     </Layout>
 
   );

@@ -1,12 +1,14 @@
-import { Layout, Button, theme, Input, Flex, Divider, Slider, Space } from 'antd';
+import {Button, Divider, Flex, Input, Layout, Slider, Space, theme} from 'antd';
 import IconFont from '../../utils/IconFont';
-const { Sider, Content } = Layout
+
+const {Sider, Content} = Layout
+
 function SimulatorPanel() {
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: {colorBgContainer, borderRadiusLG},
   } = theme.useToken();
   return (
-    <Layout style={{ padding: '12px' }}>
+    <Layout style={{padding: '12px'}}>
       <Layout>
         <Sider theme='light'>
           <Layout>
@@ -20,7 +22,7 @@ function SimulatorPanel() {
             }}>
 
             </Content>
-            <Flex style={{ margin:'8px 4px' }}>
+            <Flex style={{margin: '8px 4px'}}>
               <Space>
                 <Button icon={<IconFont type='icon-reset'/>}>复位</Button>
                 <Button icon={<IconFont type='icon-next-step'/>}>下一步</Button>
@@ -38,26 +40,26 @@ function SimulatorPanel() {
             }}>
 
             </Content>
-            <Input addonBefore='Trace文件' style={{ padding: '8px 4px' }} />
-            <Flex style={{margin:'4px'}}>
+            <Input addonBefore='Trace文件' style={{padding: '8px 4px'}}/>
+            <Flex style={{margin: '4px'}}>
               <Space>
                 <Button icon={<IconFont type='icon-backward'/>}>后退</Button>
                 <Button icon={<IconFont type='icon-forward'/>}>前进</Button>
               </Space>
             </Flex>
-            <Flex style={{margin:'4px'}}>
+            <Flex style={{margin: '4px'}}>
               <Space>
                 <Button icon={<IconFont type='icon-next-step'/>}>重放</Button>
                 <Button icon={<IconFont type='icon-random'/>}>随机</Button>
-              </Space>   
+              </Space>
             </Flex>
-            <Flex style={{margin:'4px'}}>
+            <Flex style={{margin: '4px'}}>
               <Space>
                 <Button icon={<IconFont type='icon-open'/>}>打开</Button>
                 <Button icon={<IconFont type='icon-save'/>}>保存</Button>
               </Space>
             </Flex>
-            <Slider marks={{ 0: '慢', 100: '快' }} defaultValue={50} />
+            <Slider marks={{0: '慢', 100: '快'}} defaultValue={50}/>
 
           </Layout>
 
@@ -73,7 +75,7 @@ function SimulatorPanel() {
           borderRadius: borderRadiusLG,
         }}>
           <Layout>
-            <Sider theme='light' style={{ marginRight: 8, minHeight: 700 }}></Sider>
+            <Sider theme='light' style={{marginRight: 8, minHeight: 700}}></Sider>
             {/* <Content style={{
               //   padding: 24,
               minHeight: 772,
@@ -89,7 +91,7 @@ function SimulatorPanel() {
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}>
-      
+
             </Content>
 
           </Layout>
