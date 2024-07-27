@@ -1,4 +1,4 @@
-import {Button, ConfigProvider, Divider, Tooltip} from "antd"
+import {Button, ConfigProvider, Divider, notification, Tooltip} from "antd"
 import IconFont from "../utils/IconFont"
 import {useDispatch, useSelector} from "react-redux"
 import {useRef} from "react"
@@ -37,6 +37,12 @@ function Toolbar() {
     };
 
     reader.readAsDataURL(blob);
+
+    notification.success({
+      message: "保存成功",
+      description: "模型已保存到本地",
+      duration: 3,
+    });
   }
 
   const handleFileInputChange = (event) => {
@@ -130,9 +136,6 @@ function Toolbar() {
       >
         {/* first group*/}
         <ConfigProvider>
-          <Tooltip title="新建">
-            <Button id="createBtn" type="text" icon={<IconFont type="icon-create"/>}></Button>
-          </Tooltip>
           <Tooltip title={<span>新建</span>}>
             <Button id="createBtn" type="text" icon={<IconFont type="icon-create"/>}></Button>
           </Tooltip>
