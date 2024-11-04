@@ -1,13 +1,24 @@
-const {app, BrowserWindow} = require('electron')
-const {join} = require("path");
-const {format} = require("url");
+const { app, BrowserWindow } = require('electron')
+const { join } = require("path");
+const { format } = require("url");
 const isDev = process.env.NODE_ENV === 'development';
-
+const { createServer } = require('http-server');
 
 // 保持window对象的全局引用,避免JavaScript对象被垃圾回收时,窗口被自动关闭.
 let mainWindow
+// 开启服务
+const triggerServer = (host, port, directory) => {
+  const server = createServer({
+    root: join(__dirname, directory) // 指定服务器根目录
+  });
 
+  server.listen(port, host, () => {
+    console.log(`Server running at http://${host}:${port}/`)
+  })
+  return server;
+}
 function createWindow() {
+  const server1 = triggerServer("localhost", "8080", "dist");
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -20,18 +31,14 @@ function createWindow() {
     },
   })
 
-  mainWindow.loadURL("http://localhost:5173");
-  // mainWindow.loadURL(format({
-  //   pathname: join(__dirname, './dist/index.html'),
-  //   protocol: 'file:',
-  //   slashes: true,
-  // }));
+  mainWindow.loadURL("http://localhost:8080");
 
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   // 关闭window时触发下列事件.
   mainWindow.on('closed', function () {
     mainWindow = null
+    server1.close();
   })
 }
 
@@ -63,4 +70,3 @@ app.on("render-process-gone", function (event, webContents, details) {
 });
 
 
- 
