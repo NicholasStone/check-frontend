@@ -1,9 +1,17 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, session } = require('electron')
 const { join } = require("path");
 const { format } = require("url");
 const isDev = process.env.NODE_ENV === 'development';
 const { createServer } = require('http-server');
+const httpProxy = require('http-proxy');
 
+// // 创建代理服务器
+// const proxy = httpProxy.createProxyServer({});
+
+// // 启动代理服务器
+// const proxyServer = proxy.listen(8080, 'localhost', () => {
+//   console.log('Proxy server running on http://localhost:8080');
+// });
 // app.disableHardwareAcceleration();  // 禁用硬件加速（在旧版系统更稳定）
 
 // 保持window对象的全局引用,避免JavaScript对象被垃圾回收时,窗口被自动关闭.
@@ -24,6 +32,11 @@ const triggerServer = (host, port, directory) => {
 function createWindow() {
   const port = "8070"
   const server1 = triggerServer("localhost", port, "dist");
+
+  session.defaultSession.clearCache(() => {
+    console.log('Cache cleared===========================');
+  });
+
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -33,6 +46,10 @@ function createWindow() {
       contextIsolation: false, // 可以使用require方法
       enableRemoteModule: true, // 可以使用remote方法
       webSecurity: false, // 它将禁用同源策略 (通常用来测试网站), 如果此选项不是由开发者设置的默认为true
+      proxy: {
+        proxyRules: "http=myproxy:8080,https=myproxy:8080",
+        proxyBypassRules: "<local>"
+      },
     },
   })
 

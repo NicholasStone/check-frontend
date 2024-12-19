@@ -1,6 +1,6 @@
 import {Button, Card, ConfigProvider, Flex, Input, Layout, notification} from "antd"
 import {useRef, useState} from "react"
-import {request} from "../../utils/request"
+import {request} from "../../utils"
 import {useDispatch} from "react-redux";
 import {setParsedSynLong} from "../../store/modules/lustre/synlong.jsx";
 
