@@ -4,9 +4,12 @@ const { format } = require("url");
 const isDev = process.env.NODE_ENV === 'development';
 const { createServer } = require('http-server');
 
+// app.disableHardwareAcceleration();  // 禁用硬件加速（在旧版系统更稳定）
+
 // 保持window对象的全局引用,避免JavaScript对象被垃圾回收时,窗口被自动关闭.
 let mainWindow
-// 开启服务
+
+// vite build后的dist文件夹只能用http-server来启动服务, 直接点击加载不出来js
 const triggerServer = (host, port, directory) => {
   const server = createServer({
     root: join(__dirname, directory) // 指定服务器根目录
@@ -17,8 +20,10 @@ const triggerServer = (host, port, directory) => {
   })
   return server;
 }
+
 function createWindow() {
-  const server1 = triggerServer("localhost", "8080", "dist");
+  const port = "8070"
+  const server1 = triggerServer("localhost", port, "dist");
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -31,9 +36,9 @@ function createWindow() {
     },
   })
 
-  mainWindow.loadURL("http://localhost:8080");
+  mainWindow.loadURL("http://localhost:" + port);
 
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // 关闭window时触发下列事件.
   mainWindow.on('closed', function () {
