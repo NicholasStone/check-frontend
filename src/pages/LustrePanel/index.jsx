@@ -1,5 +1,5 @@
 import {Button, Card, ConfigProvider, Flex, Input, Layout, notification} from "antd"
-import {useRef, useState} from "react"
+import {useRef, useState, useEffect} from "react"
 import {request} from "../../utils"
 import {useDispatch} from "react-redux";
 import {setParsedSynLong} from "../../store/modules/lustre/synlong.jsx";
@@ -8,9 +8,24 @@ function LustrePanel() {
   const synlongRef = useRef(null)
   const {TextArea} = Input
   const [value, setValue] = useState("")
+  const [synlongValue, setSynlongValue] = useState(localStorage.getItem('synlongValue') || "");
   const [api, contextHolder] = notification.useNotification();
   // 在EditorPanel组件中，当编辑器内容变化时调用
   const dispatch = useDispatch(); // 假设使用Redux
+
+  // 文件导入处理函数
+  const handleFileImport = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const content = e.target.result;
+        synlongRef.current.resizableTextArea.textArea.value = content;
+        handleEditorChange(); // 更新全局状态
+      };
+      reader.readAsText(file);
+    }
+  };
 
   // TODO: 解析函数
   function parseEditorContent(content) {
@@ -27,7 +42,12 @@ function LustrePanel() {
     const parsedItems = parseEditorContent(file);
     // 更新全局状态
     dispatch(setParsedSynLong(parsedItems)); // 假设有这样一个action
+    setSynlongValue(file); // 更新synlongValue状态
   }
+
+  useEffect(() => {
+    localStorage.setItem('synlongValue', synlongValue);
+  }, [synlongValue]);
 
   async function checkDataFlow() {
     const file = synlongRef.current.resizableTextArea.textArea.value
@@ -71,10 +91,12 @@ function LustrePanel() {
           <Flex vertical style={{width: '50%'}} gap='middle'>
             <div>
               <Button style={{float: 'left'}} size="large" onClick={convertToJson}>状态机转化</Button>
-              <Button style={{float: 'right'}} size="large" onClick={checkDataFlow}>数据流验证</Button>
+              {/*<Button style={{float: 'right'}} size="large" onClick={checkDataFlow}>数据流验证</Button>*/}
             </div>
+            <input type="file" accept=".txt" onChange={handleFileImport} style={{marginBottom: '10px'}} />
             <TextArea ref={synlongRef} style={{resize: 'vertical', height: '660px'}} onChange={handleEditorChange}
-                      placeholder="在这里输入SynLong代码，再点击对应的按钮进行转化或者验证"></TextArea>
+                      value={synlongValue}
+                      placeholder="在这里输入SynLong代码或者点击左上角导入，再点击对应的按钮进行转化"></TextArea>
           </Flex>
           <ConfigProvider
             theme={{
@@ -83,7 +105,7 @@ function LustrePanel() {
               },
             }}
           >
-            <Card style={{width: '50%', whiteSpace: 'pre-wrap'}} title="转化/验证结果">{value}</Card>
+            <Card style={{width: '50%', whiteSpace: 'pre-wrap'}} title="转化结果">{value}</Card>
           </ConfigProvider>
 
         </Flex>
