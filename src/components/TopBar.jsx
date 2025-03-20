@@ -8,10 +8,10 @@ import {FileTextOutlined, FormOutlined, PlayCircleOutlined, QuestionCircleOutlin
 function TopBar() {
   const {Header} = Layout;
   const items = [
-    {key: 'lustre', label: 'SynLong', icon: <FileTextOutlined/>},
-    {key: 'editor', label: '编辑器', icon: <FormOutlined/>},
+    {key: 'lustre', label: 'Lustre编辑器', icon: <FileTextOutlined/>},
+    {key: 'editor', label: '自动机', icon: <FormOutlined/>},
     {key: 'verifier', label: '验证器', icon: <QuestionCircleOutlined/>},
-    {key: 'simulator', label: '模拟器', icon: <PlayCircleOutlined/>},
+    // {key: 'simulator', label: '模拟器', icon: <PlayCircleOutlined/>},
   ];
   const dispatch = useDispatch()
   const navigate = useNavigate()

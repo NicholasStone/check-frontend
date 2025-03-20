@@ -10,7 +10,7 @@ function SideBar() {
     {
       key: 1,
       icon: <FunctionOutlined/>,
-      label: "Node",
+      label: "节点",
       children: parsedItems.nodes.map(node => ({
         key: node.id,
         label: node.name,
@@ -20,27 +20,27 @@ function SideBar() {
     {
       key: 2,
       icon: <NodeIndexOutlined/>,
-      label: "StateMachine",
+      label: "状态机",
       children: parsedItems.stateMachines.map(stm => ({
         key: stm.id,
         label: stm.name,
         icon: <NodeIndexOutlined/>,
       })),
     },
-    {
-      key: 3,
-      icon: <ContainerOutlined/>,
-      label: "Variable",
-      children: parsedItems.variables.map(variable => ({
-        key: variable.id,
-        label: variable.name,
-        icon: <ContainerOutlined/>,
-      })),
-    },
+    // {
+    //   key: 3,
+    //   icon: <ContainerOutlined/>,
+    //   label: "变量",
+    //   children: parsedItems.variables.map(variable => ({
+    //     key: variable.id,
+    //     label: variable.name,
+    //     icon: <ContainerOutlined/>,
+    //   })),
+    // },
     {
       key: 4,
       icon: <MoreOutlined/>,
-      label: "Others",
+      label: "其他",
       children: parsedItems.others.map(other => ({
         key: other.id,
         label: other.name,

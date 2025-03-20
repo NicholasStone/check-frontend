@@ -22,7 +22,7 @@ function EditorPanel() {
             {
               key: 'global_declaration',
               icon: <IconFont type='icon-paper'/>,
-              label: '声明',
+              label: '全局声明',
             },
             {
               icon: <IconFont type='icon-clock'/>,
@@ -36,14 +36,14 @@ function EditorPanel() {
                 {
                   key: 'local_declaration',
                   icon: <IconFont type='icon-paper'/>,
-                  label: '声明',
+                  label: '局部声明',
                 }
               ]
             },
             {
               key: 'system_declaration',
               icon: <IconFont type='icon-paper'/>,
-              label: '模型声明',
+              label: '模型实例',
             },
           ]}
           onClick={(e) => {

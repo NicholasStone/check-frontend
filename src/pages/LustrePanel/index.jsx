@@ -1,8 +1,9 @@
 import {Button, Card, ConfigProvider, Flex, Input, Layout, notification} from "antd"
 import {useRef, useState, useEffect} from "react"
 import {request} from "../../utils"
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setParsedSynLong} from "../../store/modules/lustre/synlong.jsx";
+import {setAutos, setDeclaration, setSystemDeclaration} from "../../store/modules/editor/model";
 
 function LustrePanel() {
   const synlongRef = useRef(null)
@@ -13,27 +14,68 @@ function LustrePanel() {
   // 在EditorPanel组件中，当编辑器内容变化时调用
   const dispatch = useDispatch(); // 假设使用Redux
 
+  const {parsedItems} = useSelector(state => {
+    console.log("Redux State:", state.parsedItems); // 调试信息
+    return state.parsedItems;
+  });
+
   // 文件导入处理函数
   const handleFileImport = (event) => {
-    const file = event.target.files[0];
-    if (file) {
+    const files = Array.from(event.target.files);
+    let content = "";
+    let dependNodeContent = "";
+
+    files.forEach(file => {
       const reader = new FileReader();
       reader.onload = (e) => {
-        const content = e.target.result;
-        synlongRef.current.resizableTextArea.textArea.value = content;
+        // TODO: 修改这里的文件名
+        if (file.name === 'DependNode.lus') {
+          dependNodeContent = e.target.result + "\n" + dependNodeContent;
+        } else {
+          content += e.target.result + "\n";
+        }
+        synlongRef.current.resizableTextArea.textArea.value = dependNodeContent + content;
         handleEditorChange(); // 更新全局状态
       };
       reader.readAsText(file);
-    }
+    });
   };
 
   // TODO: 解析函数
   function parseEditorContent(content) {
+    const nodes = [];
+    const stateMachines = [];
+    const variables = [];
+    const others = [];
+  
+    // 匹配节点和函数声明
+    const opRegex = /(function|node)\s+([a-zA-Z_][a-zA-Z_0-9]*)\s*\(([^)]*)\)\s*returns\s*\(([^)]*)\)\s*;/g;
+    let match;
+    while ((match = opRegex.exec(content)) !== null) {
+      nodes.push({
+        kind: match[1],
+        id: match[2],
+        name: match[2],
+        params: match[3].split(';').map(param => param.trim()).filter(Boolean),
+        returns: match[4].split(';').map(ret => ret.trim()).filter(Boolean),
+      });
+    }
+
+    // 匹配状态机声明
+    const smRegex = /automaton\s+([a-zA-Z_][a-zA-Z_0-9]*)?\s*{([^}]*)}/gs;
+    while ((match = smRegex.exec(content)) !== null) {
+      stateMachines.push({
+        id: match[1] || 'anonymous',
+        name: match[1] || 'anonymous',
+        body: match[2].trim(),
+      });
+    }
+
     return {
-      nodes: [{id: 'node_1', name: 'node_A'}, {id: 'node_2', name: 'node_B'}],
-      stateMachines: [{id: 'stm_1', name: 'stm1'}, {id: 'stm_2', name: 'stm2'}],
-      variables: [{id: 'var_1', name: 'v1'}, {id: 'var_2', name: 'v2'}],
-      others: [{id: 'other_1', name: content}],
+      nodes,
+      stateMachines,
+      variables,
+      others,
     };
   }
 
@@ -83,6 +125,58 @@ function LustrePanel() {
     }
   }
 
+  // 导出文件函数
+  const handleLustreExport = () => {
+    const blob = new Blob([synlongValue], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'exported.lus';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // 导出转化结果函数
+  const handleExportResult = () => {
+    const blob = new Blob([value], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'converted_result.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // 同步加载到自动机函数
+  const handleSyncToAutomaton = () => {
+    try {
+      console.log(value, "value")
+      const jsonData = JSON.parse(value);
+      dispatch(setDeclaration(jsonData.declaration));
+      dispatch(setSystemDeclaration(jsonData.system_declaration));
+      let tmpAutos = jsonData.automatons;
+
+      if (tmpAutos[0].locations[0].x === undefined) {
+        transformAutos(tmpAutos);
+      }
+
+      dispatch(setAutos(tmpAutos));
+
+      notification.success({
+        message: "同步成功",
+        description: "转化结果已同步到自动机",
+        duration: 3,
+      });
+    } catch (error) {
+      notification.error({
+        message: "同步失败",
+        description: "转化结果格式不正确",
+        duration: 3,
+      });
+    }
+  };
+
+
   return (
     <Layout style={{padding: '5px'}}>
       <Layout>
@@ -91,9 +185,9 @@ function LustrePanel() {
           <Flex vertical style={{width: '50%'}} gap='middle'>
             <div>
               <Button style={{float: 'left'}} size="large" onClick={convertToJson}>状态机转化</Button>
-              {/*<Button style={{float: 'right'}} size="large" onClick={checkDataFlow}>数据流验证</Button>*/}
+              <input type="file" accept=".txt,.lus" onChange={handleFileImport} style={{marginLeft: '10px'}} multiple/>
+              <Button style={{float: 'right'}} size="large" onClick={handleLustreExport}>导出编辑框</Button>
             </div>
-            <input type="file" accept=".txt" onChange={handleFileImport} style={{marginBottom: '10px'}} />
             <TextArea ref={synlongRef} style={{resize: 'vertical', height: '660px'}} onChange={handleEditorChange}
                       value={synlongValue}
                       placeholder="在这里输入SynLong代码或者点击左上角导入，再点击对应的按钮进行转化"></TextArea>
@@ -105,7 +199,15 @@ function LustrePanel() {
               },
             }}
           >
-            <Card style={{width: '50%', whiteSpace: 'pre-wrap'}} title="转化结果">{value}</Card>
+          <Flex vertical style={{width: '50%'}}>
+            <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '10px'}}>
+              <Button size="large" style={{float: 'right'}} onClick={handleExportResult}>导出转化结果</Button>
+              {/* TODO: 同步到自动机, 这里有个问题是导入的json文件中不包含坐标信息, 而打开json文件需要坐标, 所以会出错. */}
+              {/* <Button size="large" style={{float: 'right'}} onClick={handleSyncToAutomaton}>同步到自动机</Button> */}
+            </div>
+            <Card style={{whiteSpace: 'pre-wrap', resize: 'vertical', height: '660px, ', overflowY: 'auto'}} title="转化结果">{value}</Card>
+          </Flex>
+            
           </ConfigProvider>
 
         </Flex>

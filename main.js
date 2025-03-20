@@ -55,7 +55,7 @@ function createWindow() {
 
   mainWindow.loadURL("http://localhost:" + port);
 
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   // 关闭window时触发下列事件.
   mainWindow.on('closed', function () {
