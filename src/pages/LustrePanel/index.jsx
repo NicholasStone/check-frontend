@@ -186,7 +186,7 @@ function LustrePanel() {
             <div>
               <Button style={{float: 'left'}} size="large" onClick={convertToJson}>状态机转化</Button>
               <input type="file" accept=".txt,.lus" onChange={handleFileImport} style={{marginLeft: '10px'}} multiple/>
-              <Button style={{float: 'right'}} size="large" onClick={handleLustreExport}>导出编辑框</Button>
+              <Button style={{float: 'right'}} size="large" onClick={handleLustreExport}>导出文本</Button>
             </div>
             <TextArea ref={synlongRef} style={{resize: 'vertical', height: '660px'}} onChange={handleEditorChange}
                       value={synlongValue}

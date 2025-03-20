@@ -10,7 +10,7 @@ function Declaration(props) {
   const {type, declaration} = props
   return (
     <Layout>
-      <div style={{height: '600px'}}>
+      <div style={{height: '800px'}}>
         <Editor
           language="go"
           value={declaration}

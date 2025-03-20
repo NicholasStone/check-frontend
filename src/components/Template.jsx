@@ -76,7 +76,7 @@ function Template() {
       </Header>
       <Content
         style={{
-          margin: '24px 16px',
+          margin: '3px 3px',
           position: 'relative',
           minWidth: '1100px',
           minHeight: '500px',
