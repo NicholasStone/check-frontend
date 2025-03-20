@@ -28,8 +28,8 @@ function LustrePanel() {
     files.forEach(file => {
       const reader = new FileReader();
       reader.onload = (e) => {
-        // TODO: 修改这里的文件名
-        if (file.name === 'DependNode.lus') {
+        // 要求导入两个文件时, DependNodeLib.lus内容必须在前面
+        if (file.name === 'DependNodeLib.lus') {
           dependNodeContent = e.target.result + "\n" + dependNodeContent;
         } else {
           content += e.target.result + "\n";
@@ -109,6 +109,7 @@ function LustrePanel() {
   }
 
   async function convertToJson() {
+    setValue("")
     const file = synlongRef.current.resizableTextArea.textArea.value
     const body = {file: file}
     const res = await request.post('/lustre/convert', body)
