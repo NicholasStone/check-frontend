@@ -1,31 +1,22 @@
 import {Button, Card, ConfigProvider, Flex, Input, Layout, notification, Upload, Row} from "antd"
-import {useRef, useState, useEffect} from "react"
+import {useState} from "react"
 import {request} from "../../utils"
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {setParsedSynLong} from "../../store/modules/lustre/synlong.jsx";
 import {setAutos, setDeclaration, setSystemDeclaration} from "../../store/modules/editor/model";
-import {Editor} from "@monaco-editor/react"
-import {UploadOutlined, RedoOutlined, ExportOutlined} from "@ant-design/icons"
+import {UploadOutlined, ExportOutlined} from "@ant-design/icons"
+import MonacoEditor from "./MonacoEditor";
 
 function LustrePanel() {
-  const editorRef = useRef(null)
-  const {TextArea} = Input
-  const [value, setValue] = useState("")
-  const [synlongValue, setSynlongValue] = useState(localStorage.getItem('synlongValue') || "");
+  const [value, setValue] = useState("");
   const [api, contextHolder] = notification.useNotification();
-  // 在EditorPanel组件中，当编辑器内容变化时调用
-  const dispatch = useDispatch(); // 假设使用Redux
+  const dispatch = useDispatch();
 
-  const {parsedItems} = useSelector(state => {
-    console.log("Redux State:", state.parsedItems); // 调试信息
-    return state.parsedItems;
-  });
+  const handleEditorChange = (newValue) => {
+    const parsedItems = parseEditorContent(newValue);
+    dispatch(setParsedSynLong(parsedItems));
+  };
 
-  function handleEditorDidMount(editor) {
-    editorRef.current = editor;
-  }
-
-  // 文件导入处理函数
   const handleFileImport = (info) => {
     if (info.file.status !== 'uploading') {
       const files = info.fileList.map(item => item.originFileObj);
@@ -35,15 +26,12 @@ function LustrePanel() {
       files.forEach(file => {
         const reader = new FileReader();
         reader.onload = (e) => {
-          // 要求导入两个文件时, DependNodeLib.lus内容必须在前面
           if (file.name === 'DependNodeLib.lus') {
             dependNodeContent = e.target.result + "\n" + dependNodeContent;
           } else {
             content += e.target.result + "\n";
           }
           const newContent = dependNodeContent + content;
-          editorRef.current.setValue(newContent);
-          setSynlongValue(newContent);
           handleEditorChange(newContent);
         };
         reader.readAsText(file);
@@ -51,14 +39,12 @@ function LustrePanel() {
     }
   };
 
-  // TODO: 解析函数
-  function parseEditorContent(content) {
+  const parseEditorContent = (content) => {
     const nodes = [];
     const stateMachines = [];
     const variables = [];
     const others = [];
-  
-    // 匹配节点和函数声明
+
     const opRegex = /(function|node)\s+([a-zA-Z_][a-zA-Z_0-9]*)\s*\(([^)]*)\)\s*returns\s*\(([^)]*)\)\s*;/g;
     let match;
     while ((match = opRegex.exec(content)) !== null) {
@@ -71,7 +57,6 @@ function LustrePanel() {
       });
     }
 
-    // 匹配状态机声明
     const smRegex = /automaton\s+([a-zA-Z_][a-zA-Z_0-9]*)?\s*{([^}]*)}/gs;
     while ((match = smRegex.exec(content)) !== null) {
       stateMachines.push({
@@ -81,64 +66,11 @@ function LustrePanel() {
       });
     }
 
-    return {
-      nodes,
-      stateMachines,
-      variables,
-      others,
-    };
-  }
+    return { nodes, stateMachines, variables, others };
+  };
 
-  function handleEditorChange(value) {
-    const parsedItems = parseEditorContent(value);
-    // 更新全局状态
-    dispatch(setParsedSynLong(parsedItems));
-    setSynlongValue(value);
-  }
-
-  useEffect(() => {
-    localStorage.setItem('synlongValue', synlongValue);
-  }, [synlongValue]);
-
-  async function checkDataFlow() {
-    const code = editorRef.current.getValue();
-    const body = {file: code}
-    const res = await request.post('/lustre/check-dataflow', body)
-    //success
-    if (res.code === 200) {
-      setValue(res.data.result)
-    } else {
-      setValue("")
-      api.error({
-        message: "验证出错",
-        description: res.message,
-        duration: 5,
-      });
-    }
-  }
-
-  async function convertToJson() {
-    setValue("")
-    const code = editorRef.current.getValue();
-    const body = {file: code}
-    const res = await request.post('/lustre/convert', body)
-    //success
-    if (res.code === 200) {
-      setValue(res.data.jsonModel)
-    } else {
-      setValue("")
-      api.error({
-        message: "转化出错",
-        description: res.message,
-        duration: 5,
-      });
-    }
-  }
-
-  // 导出文件函数
   const handleLustreExport = () => {
-    const code = editorRef.current.getValue();
-    const blob = new Blob([code], { type: 'text/plain;charset=utf-8' });
+    const blob = new Blob([value], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -147,7 +79,6 @@ function LustrePanel() {
     URL.revokeObjectURL(url);
   };
 
-  // 导出转化结果函数
   const handleExportResult = () => {
     const blob = new Blob([value], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -158,36 +89,6 @@ function LustrePanel() {
     URL.revokeObjectURL(url);
   };
 
-  // 同步加载到自动机函数
-  const handleSyncToAutomaton = () => {
-    try {
-      console.log(value, "value")
-      const jsonData = JSON.parse(value);
-      dispatch(setDeclaration(jsonData.declaration));
-      dispatch(setSystemDeclaration(jsonData.system_declaration));
-      let tmpAutos = jsonData.automatons;
-
-      if (tmpAutos[0].locations[0].x === undefined) {
-        transformAutos(tmpAutos);
-      }
-
-      dispatch(setAutos(tmpAutos));
-
-      notification.success({
-        message: "同步成功",
-        description: "转化结果已同步到自动机",
-        duration: 3,
-      });
-    } catch (error) {
-      notification.error({
-        message: "同步失败",
-        description: "转化结果格式不正确",
-        duration: 3,
-      });
-    }
-  };
-
-
   return (
     <Layout style={{ padding: "5px" }}>
       <Layout>
@@ -197,8 +98,24 @@ function LustrePanel() {
             <Row>
               <Button
                 size="large"
-                onClick={convertToJson}
-                icon={<RedoOutlined />}
+                onClick={() => {
+                  setValue("");
+                  const code = editorRef.current.getValue();
+                  const body = { file: code };
+                  request.post('/lustre/convert', body).then(res => {
+                    if (res.code === 200) {
+                      setValue(res.data.jsonModel);
+                    } else {
+                      setValue("");
+                      api.error({
+                        message: "转化出错",
+                        description: res.message,
+                        duration: 5,
+                      });
+                    }
+                  });
+                }}
+                icon={<ExportOutlined />}
                 type="primary"
               >
                 状态机转化
@@ -231,17 +148,10 @@ function LustrePanel() {
                 导出文本
               </Button>
             </Row>
-            <Editor
-              height="660px"
-              language="lua"
-              value={synlongValue}
+            <MonacoEditor
+              value={value}
               onChange={handleEditorChange}
-              onMount={handleEditorDidMount}
-              options={{
-                minimap: { enabled: true },
-                fontSize: 14,
-                scrollBeyondLastLine: false,
-              }}
+              onExport={handleLustreExport}
             />
           </Flex>
           <ConfigProvider
@@ -266,8 +176,6 @@ function LustrePanel() {
                 >
                   导出转化结果
                 </Button>
-                {/* TODO: 同步到自动机, 这里有个问题是导入的json文件中不包含坐标信息, 而打开json文件需要坐标, 所以会出错. */}
-                {/* <Button size="large" style={{float: 'right'}} onClick={handleSyncToAutomaton}>同步到自动机</Button> */}
               </div>
               <Card
                 style={{
@@ -288,4 +196,4 @@ function LustrePanel() {
   );
 }
 
-export default LustrePanel
+export default LustrePanel;
