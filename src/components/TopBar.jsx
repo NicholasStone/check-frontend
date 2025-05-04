@@ -24,23 +24,17 @@ function TopBar() {
   return (
     <Header
       style={{
-        overflow: 'auto',
-        width: '100vw',
-        position: 'fixed',
-        left: 0,
-        top: 0,
-        right: 0,
-        background: 'linear-gradient(to right, lightblue, white)',// TODO: 这里有问题, 不加这句两边为什么有些黑色区域
-      }}>
+        background: 'linear-gradient(to right, lightblue, white)'
+      }}
+      >
       <div className="demo-logo"/>
       <Menu
         mode="horizontal"
         defaultSelectedKeys={['1']}
         items={items}
         style={{
-          flex: 1,
           minWidth: 0,
-          background: 'linear-gradient(to right, lightblue, white)',// 渐变色
+          background: 'transparent',
         }}
         onClick={(e) => {
           const mode = e.key;

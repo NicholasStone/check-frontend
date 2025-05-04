@@ -1,5 +1,5 @@
 import { Button, Row, Select, Space, Input, Switch, InputNumber, Modal } from "antd";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import { Editor } from "@monaco-editor/react";
 import {
   PlusOutlined,
@@ -23,20 +23,19 @@ import {
   AlignRightOutlined,
 } from "@ant-design/icons";
 
-function MonacoEditor({ value, onChange, onExport }) {
+const MonacoEditor = forwardRef(({ value, onChange, onExport }, ref) => {
   const editorRef = useRef(null);
   const [fontSize, setFontSize] = useState(14);
   const [fontFamily, setFontFamily] = useState("Consolas");
   const [theme, setTheme] = useState("vs-light");
-  const [searchVisible, setSearchVisible] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
-  const [replaceValue, setReplaceValue] = useState("");
+  // const [searchVisible, setSearchVisible] = useState(false);
+  // const [searchValue, setSearchValue] = useState("");
+  // const [replaceValue, setReplaceValue] = useState("");
   const [showLineNumbers, setShowLineNumbers] = useState(true);
   const [wordWrap, setWordWrap] = useState(false);
   const [showMinimap, setShowMinimap] = useState(true);
   const [showWhitespace, setShowWhitespace] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [showLineHighlight, setShowLineHighlight] = useState(true);
   const [showBracketMatch, setShowBracketMatch] = useState(true);
   const [showIndentGuides, setShowIndentGuides] = useState(true);
   const [showLineEndings, setShowLineEndings] = useState(false);
@@ -57,7 +56,6 @@ function MonacoEditor({ value, onChange, onExport }) {
         wordWrap: wordWrap ? "on" : "off",
         minimap: { enabled: showMinimap },
         renderWhitespace: showWhitespace ? "all" : "none",
-        renderLineHighlight: showLineHighlight ? "all" : "none",
         matchBrackets: showBracketMatch ? "always" : "never",
         guides: {
           indentation: showIndentGuides,
@@ -74,7 +72,6 @@ function MonacoEditor({ value, onChange, onExport }) {
     wordWrap,
     showMinimap,
     showWhitespace,
-    showLineHighlight,
     showBracketMatch,
     showIndentGuides,
     showLineEndings,
@@ -103,13 +100,15 @@ function MonacoEditor({ value, onChange, onExport }) {
 
   const handleSearch = () => {
     if (editorRef.current) {
-      editorRef.current.trigger("keyboard", "actions.find", {});
+      editorRef.current.focus();
+      editorRef.current.getAction('actions.find').run();
     }
   };
 
   const handleReplace = () => {
     if (editorRef.current) {
-      editorRef.current.trigger("keyboard", "editor.action.startFindReplaceAction", {});
+      editorRef.current.focus();
+      editorRef.current.getAction('editor.action.startFindReplaceAction').run();
     }
   };
 
@@ -173,46 +172,137 @@ function example() returns (bool) {
     }
   };
 
+  const handleComment = () => {
+    if (editorRef.current) {
+      editorRef.current.trigger("keyboard", "editor.action.commentLine", {});
+    }
+  };
+
+  const handleFold = () => {
+    if (editorRef.current) {
+      editorRef.current.trigger("keyboard", "editor.fold", {});
+    }
+  };
+
+  const handleUnfold = () => {
+    if (editorRef.current) {
+      editorRef.current.trigger("keyboard", "editor.unfold", {});
+    }
+  };
+
+  const handleHighlight = () => {
+    if (editorRef.current) {
+      const selection = editorRef.current.getSelection();
+      if (selection) {
+        editorRef.current.deltaDecorations([], [
+          {
+            range: selection,
+            options: { className: 'highlighted-text' }
+          }
+        ]);
+      }
+    }
+  };
+
+  // Expose methods to parent component
+  useImperativeHandle(ref, () => ({
+    setValue: (newValue) => {
+      if (editorRef.current) {
+        editorRef.current.setValue(newValue);
+      }
+    },
+    getValue: () => {
+      if (editorRef.current) {
+        return editorRef.current.getValue();
+      }
+      return "";
+    }
+  }));
+
   return (
     <>
       <Row style={{ margin: "0" }}>
         <Space>
-          <Button icon={<UndoOutlined />} onClick={handleUndo} title="撤销 (Ctrl+Z)" />
-          <Button icon={<RedoOutlined />} onClick={handleRedo} title="重做 (Ctrl+Y)" />
-          <Button icon={<CopyOutlined />} onClick={handleCopy} title="复制 (Ctrl+C)" />
-          <Button icon={<SnippetsOutlined />} onClick={handlePaste} title="粘贴 (Ctrl+V)" />
-          <Button icon={<SearchOutlined />} onClick={handleSearch} title="查找 (Ctrl+F)" />
-          <Button icon={<SwapOutlined />} onClick={handleReplace} title="替换 (Ctrl+H)" />
-          <Button icon={<LineOutlined />} onClick={handleGoToLine} title="跳转到行 (Ctrl+G)" />
-          <Button icon={<CodeOutlined />} onClick={handleFormat} title="格式化代码 (Alt+Shift+F)" />
-          <Button icon={<DownOutlined />} onClick={handleFoldAll} title="折叠所有代码块" />
-          <Button icon={<UpOutlined />} onClick={handleUnfoldAll} title="展开所有代码块" />
-          <Button icon={<FileTextOutlined />} onClick={handleMultiCursor} title="多光标编辑 (Alt+Click)" />
-          <Button icon={<BulbOutlined />} onClick={handleAddSnippet} title="插入代码片段" />
-          {isFullscreen ? (
+          <Button
+            icon={<UndoOutlined />}
+            onClick={handleUndo}
+            title="撤销 (Ctrl+Z)"
+          />
+          <Button
+            icon={<RedoOutlined />}
+            onClick={handleRedo}
+            title="重做 (Ctrl+Y)"
+          />
+          <Button
+            icon={<CopyOutlined />}
+            onClick={handleCopy}
+            title="复制 (Ctrl+C)"
+          />
+          <Button
+            icon={<SnippetsOutlined />}
+            onClick={handlePaste}
+            title="粘贴 (Ctrl+V)"
+          />
+          <Button
+            icon={<SearchOutlined />}
+            onClick={handleSearch}
+            title="查找 (Ctrl+F)"
+          />
+          <Button
+            icon={<SwapOutlined />}
+            onClick={handleReplace}
+            title="替换 (Ctrl+H)"
+          />
+          <Button
+            icon={<LineOutlined />}
+            onClick={handleGoToLine}
+            title="跳转到行 (Ctrl+G)"
+          />
+          <Button
+            icon={<CodeOutlined />}
+            onClick={handleFormat}
+            title="格式化代码 (Alt+Shift+F)"
+          />
+          <Button
+            icon={<DownOutlined />}
+            onClick={handleFoldAll}
+            title="折叠所有代码块"
+          />
+          <Button
+            icon={<UpOutlined />}
+            onClick={handleUnfoldAll}
+            title="展开所有代码块"
+          />
+          <Button
+            icon={<FileTextOutlined />}
+            onClick={handleMultiCursor}
+            title="多光标编辑 (Alt+Click)"
+          />
+          <Button
+            icon={<BulbOutlined />}
+            onClick={handleAddSnippet}
+            title="插入代码片段"
+          />
+          <Button
+            icon={<AlignLeftOutlined />}
+            onClick={handleComment}
+            title="注释/取消注释 (Ctrl+/)"
+          />
+          <Button
+            icon={<AlignRightOutlined />}
+            onClick={handleFold}
+            title="折叠代码块"
+          />
+          <Button
+            icon={<HighlightOutlined />}
+            onClick={handleHighlight}
+            title="高亮代码"
+          />
+          {/* {isFullscreen ? (
             <Button icon={<FullscreenExitOutlined />} onClick={toggleFullscreen} title="退出全屏 (F11)" />
           ) : (
             <Button icon={<FullscreenOutlined />} onClick={toggleFullscreen} title="全屏显示 (F11)" />
-          )}
-        </Space>
-      </Row>
-      <Row style={{ margin: "0" }}>
-        <Space>
-          <span>字体：</span>
-          <Select
-            value={fontFamily}
-            onChange={handleFontFamilyChange}
-            options={[
-              { value: "Consolas", label: "Consolas" },
-              { value: "Courier New", label: "Courier New" },
-              { value: "Fira Code", label: "Fira Code" },
-              { value: "Source Code Pro", label: "Source Code Pro" },
-            ]}
-            style={{ width: 150 }}
-          />
-          <Button icon={<MinusOutlined />} onClick={decreaseFontSize} title="减小字号" />
-          <span>{fontSize}px</span>
-          <Button icon={<PlusOutlined />} onClick={increaseFontSize} title="增大字号" />
+          )} */}
         </Space>
       </Row>
       <Row style={{ margin: "0" }}>
@@ -225,34 +315,84 @@ function example() returns (bool) {
               { value: "vs-light", label: "明亮" },
               { value: "vs-dark", label: "暗黑" },
               { value: "hc-black", label: "高对比" },
-              { value: "monokai", label: "Monokai" },
-              { value: "solarized-light", label: "Solarized Light" },
-              { value: "solarized-dark", label: "Solarized Dark" },
             ]}
             style={{ width: 200 }}
           />
-          <span>行号：</span>
-          <Switch checked={showLineNumbers} onChange={setShowLineNumbers} />
-          <span>自动换行：</span>
-          <Switch checked={wordWrap} onChange={setWordWrap} />
-          <span>小地图：</span>
-          <Switch checked={showMinimap} onChange={setShowMinimap} />
-          <span>空白字符：</span>
-          <Switch checked={showWhitespace} onChange={setShowWhitespace} />
+          <span>字体：</span>
+          <Select
+            value={fontFamily}
+            onChange={handleFontFamilyChange}
+            options={[
+              { value: "Consolas", label: "Consolas" },
+              { value: "Courier New", label: "Courier New" },
+              { value: "Fira Code", label: "Fira Code" },
+              { value: "Source Code Pro", label: "Source Code Pro" },
+            ]}
+            style={{ width: 150 }}
+          />
+          <Button
+            icon={<MinusOutlined />}
+            onClick={decreaseFontSize}
+            title="减小字号"
+          />
+          <span>{fontSize}px</span>
+          <Button
+            icon={<PlusOutlined />}
+            onClick={increaseFontSize}
+            title="增大字号"
+          />
         </Space>
       </Row>
       <Row style={{ margin: "0" }}>
         <Space>
-          <span>行高亮：</span>
-          <Switch checked={showLineHighlight} onChange={setShowLineHighlight} />
-          <span>括号匹配：</span>
-          <Switch checked={showBracketMatch} onChange={setShowBracketMatch} />
-          <span>缩进参考线：</span>
-          <Switch checked={showIndentGuides} onChange={setShowIndentGuides} />
-          <span>行尾字符：</span>
-          <Switch checked={showLineEndings} onChange={setShowLineEndings} />
-          <span>当前行高亮：</span>
-          <Switch checked={showCurrentLine} onChange={setShowCurrentLine} />
+          <Button
+            type={showLineNumbers ? "primary" : "default"}
+            onClick={() => setShowLineNumbers(!showLineNumbers)}
+          >
+            {showLineNumbers ? "隐藏行号" : "显示行号"}
+          </Button>
+          <Button
+            type={wordWrap ? "primary" : "default"}
+            onClick={() => setWordWrap(!wordWrap)}
+          >
+            {wordWrap ? "关闭自动换行" : "开启自动换行"}
+          </Button>
+          <Button
+            type={showMinimap ? "primary" : "default"}
+            onClick={() => setShowMinimap(!showMinimap)}
+          >
+            {showMinimap ? "隐藏小地图" : "显示小地图"}
+          </Button>
+          <Button
+            type={showWhitespace ? "primary" : "default"}
+            onClick={() => setShowWhitespace(!showWhitespace)}
+          >
+            {showWhitespace ? "隐藏空白字符" : "显示空白字符"}
+          </Button>
+          <Button
+            type={showBracketMatch ? "primary" : "default"}
+            onClick={() => setShowBracketMatch(!showBracketMatch)}
+          >
+            {showBracketMatch ? "关闭括号匹配" : "开启括号匹配"}
+          </Button>
+          <Button
+            type={showIndentGuides ? "primary" : "default"}
+            onClick={() => setShowIndentGuides(!showIndentGuides)}
+          >
+            {showIndentGuides ? "隐藏缩进参考线" : "显示缩进参考线"}
+          </Button>
+          <Button
+            type={showLineEndings ? "primary" : "default"}
+            onClick={() => setShowLineEndings(!showLineEndings)}
+          >
+            {showLineEndings ? "隐藏行尾字符" : "显示行尾字符"}
+          </Button>
+          <Button
+            type={showCurrentLine ? "primary" : "default"}
+            onClick={() => setShowCurrentLine(!showCurrentLine)}
+          >
+            {showCurrentLine ? "关闭当前行高亮" : "开启当前行高亮"}
+          </Button>
         </Space>
       </Row>
       <Modal
@@ -282,7 +422,6 @@ function example() returns (bool) {
           lineNumbers: showLineNumbers ? "on" : "off",
           wordWrap: wordWrap ? "on" : "off",
           renderWhitespace: showWhitespace ? "all" : "none",
-          renderLineHighlight: showLineHighlight ? "all" : "none",
           matchBrackets: showBracketMatch ? "always" : "never",
           guides: {
             indentation: showIndentGuides,
@@ -296,6 +435,7 @@ function example() returns (bool) {
       />
     </>
   );
-}
+});
 
 export default MonacoEditor; 
+ 

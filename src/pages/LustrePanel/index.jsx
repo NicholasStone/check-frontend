@@ -1,5 +1,5 @@
 import {Button, Card, ConfigProvider, Flex, Input, Layout, notification, Upload, Row} from "antd"
-import {useState} from "react"
+import {useState, useRef, useEffect} from "react"
 import {request} from "../../utils"
 import {useDispatch} from "react-redux";
 import {setParsedSynLong} from "../../store/modules/lustre/synlong.jsx";
@@ -8,13 +8,33 @@ import {UploadOutlined, ExportOutlined} from "@ant-design/icons"
 import MonacoEditor from "./MonacoEditor";
 
 function LustrePanel() {
-  const [value, setValue] = useState("");
+  const [resultValue, setResultValue] = useState(""); // 存储转换结果
+  const [editorCode, setEditorCode] = useState(""); // 存储编辑器代码
   const [api, contextHolder] = notification.useNotification();
   const dispatch = useDispatch();
+  const editorRef = useRef(null);
+
+  // Load cached content when component mounts
+  useEffect(() => {
+    const cachedContent = localStorage.getItem('lustre_editor_content');
+    if (cachedContent) {
+      setEditorCode(cachedContent);
+      // Set editor content if editor is ready
+      setTimeout(() => {
+        if (editorRef.current) {
+          editorRef.current.setValue(cachedContent);
+          handleEditorChange(cachedContent);
+        }
+      }, 100);
+    }
+  }, []);
 
   const handleEditorChange = (newValue) => {
+    setEditorCode(newValue);
     const parsedItems = parseEditorContent(newValue);
     dispatch(setParsedSynLong(parsedItems));
+    // Save to localStorage whenever content changes
+    localStorage.setItem('lustre_editor_content', newValue);
   };
 
   const handleFileImport = (info) => {
@@ -32,10 +52,54 @@ function LustrePanel() {
             content += e.target.result + "\n";
           }
           const newContent = dependNodeContent + content;
+          // Use the ref to set editor content
+          if (editorRef.current) {
+            editorRef.current.setValue(newContent);
+          }
           handleEditorChange(newContent);
+          
+          // Save file metadata to localStorage
+          const fileCache = JSON.parse(localStorage.getItem('lustre_file_cache') || '[]');
+          const fileInfo = {
+            name: file.name,
+            lastModified: file.lastModified,
+            timestamp: new Date().getTime()
+          };
+          
+          // Check if file already exists in cache
+          const fileIndex = fileCache.findIndex(f => f.name === file.name);
+          if (fileIndex >= 0) {
+            fileCache[fileIndex] = fileInfo;
+          } else {
+            fileCache.push(fileInfo);
+          }
+          
+          // Keep only the most recent 10 files
+          if (fileCache.length > 10) {
+            fileCache.sort((a, b) => b.timestamp - a.timestamp);
+            fileCache.length = 10;
+          }
+          
+          localStorage.setItem('lustre_file_cache', JSON.stringify(fileCache));
         };
         reader.readAsText(file);
       });
+    }
+  };
+
+  // Add function to clear cache
+  const clearCache = () => {
+    localStorage.removeItem('lustre_editor_content');
+    localStorage.removeItem('lustre_file_cache');
+    notification.success({
+      message: '缓存已清除',
+      description: '所有缓存的文件内容已被清除',
+      duration: 3
+    });
+    setEditorCode("");
+    setResultValue("");
+    if (editorRef.current) {
+      editorRef.current.setValue("");
     }
   };
 
@@ -44,7 +108,7 @@ function LustrePanel() {
     const stateMachines = [];
     const variables = [];
     const others = [];
-
+  
     const opRegex = /(function|node)\s+([a-zA-Z_][a-zA-Z_0-9]*)\s*\(([^)]*)\)\s*returns\s*\(([^)]*)\)\s*;/g;
     let match;
     while ((match = opRegex.exec(content)) !== null) {
@@ -70,7 +134,7 @@ function LustrePanel() {
   };
 
   const handleLustreExport = () => {
-    const blob = new Blob([value], { type: 'text/plain;charset=utf-8' });
+    const blob = new Blob([editorCode], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -80,7 +144,7 @@ function LustrePanel() {
   };
 
   const handleExportResult = () => {
-    const blob = new Blob([value], { type: 'text/plain;charset=utf-8' });
+    const blob = new Blob([resultValue], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -94,19 +158,21 @@ function LustrePanel() {
       <Layout>
         {contextHolder}
         <Flex style={{ margin: "1px 1px" }} gap="large">
-          <Flex vertical style={{ width: "50%" }} gap="middle">
+          <Flex vertical style={{ width: "80%" }} gap="middle">
             <Row>
               <Button
                 size="large"
                 onClick={() => {
-                  setValue("");
-                  const code = editorRef.current.getValue();
+                  setResultValue("");
+                  const code = editorRef.current
+                    ? editorRef.current.getValue()
+                    : "";
                   const body = { file: code };
-                  request.post('/lustre/convert', body).then(res => {
+                  request.post("/lustre/convert", body).then((res) => {
                     if (res.code === 200) {
-                      setValue(res.data.jsonModel);
+                      setResultValue(res.data.jsonModel);
                     } else {
-                      setValue("");
+                      setResultValue("");
                       api.error({
                         message: "转化出错",
                         description: res.message,
@@ -140,6 +206,14 @@ function LustrePanel() {
                 </Button>
               </Upload>
               <Button
+                style={{ marginLeft: "10px" }}
+                size="large"
+                onClick={clearCache}
+                danger
+              >
+                清除缓存
+              </Button>
+              <Button
                 style={{ marginLeft: "auto" }}
                 size="large"
                 onClick={handleLustreExport}
@@ -149,7 +223,8 @@ function LustrePanel() {
               </Button>
             </Row>
             <MonacoEditor
-              value={value}
+              ref={editorRef}
+              value={editorCode}
               onChange={handleEditorChange}
               onExport={handleLustreExport}
             />
@@ -161,7 +236,7 @@ function LustrePanel() {
               },
             }}
           >
-            <Flex vertical style={{ width: "50%" }}>
+            <Flex vertical style={{ width: "20%" }}>
               <div
                 style={{
                   display: "flex",
@@ -186,7 +261,7 @@ function LustrePanel() {
                 }}
                 title="转化结果"
               >
-                {value}
+                {resultValue}
               </Card>
             </Flex>
           </ConfigProvider>
