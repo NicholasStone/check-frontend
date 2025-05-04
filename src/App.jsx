@@ -8,12 +8,12 @@ import {Flex, Layout} from 'antd';
 function App() {
 
   return (
-    <Layout style={{height: '100vh', width: '100vw'}}>
-      <Flex vertical style={{height: '100vh', width: '100vw'}}>
+    <Layout style={{height: '100%', width: '100%'}}>
+      <Flex vertical style={{height: '100%', width: '100%'}}>
         <TopBar />
-        <Flex gap="middle" style={{flex: 1}}>
+        <Flex gap="middle" style={{height: 'calc(100vh - 130px)'}}>
           <SideBar />
-          <Layout style={{flex: 1, padding: '10px'}}>
+          <Layout>
             <Outlet />
           </Layout>
         </Flex>

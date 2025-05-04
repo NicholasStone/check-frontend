@@ -6,12 +6,7 @@ function BottomBar() {
   return (
     <Footer
       style={{
-        textAlign: 'center',
-        overflow: 'auto',
-        position: 'fixed',
-        left: '13.5vw',
-        right: 0,
-        bottom: 0,
+        textAlign: "center",
         height: '3vh',
       }}
     >
@@ -20,4 +15,4 @@ function BottomBar() {
   )
 }
 
-export default BottomBar
+export default BottomBar;

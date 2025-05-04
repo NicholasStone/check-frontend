@@ -334,10 +334,6 @@ function example() returns (bool) {
           ) : (
             <Button icon={<FullscreenOutlined />} onClick={toggleFullscreen} title="全屏显示 (F11)" />
           )} */}
-        </Space>
-      </Row>
-      <Row style={{ margin: "0" }}>
-        <Space>
           <span>主题：</span>
           <Select
             value={theme}
@@ -428,7 +424,7 @@ function example() returns (bool) {
       </Row>
       <Editor
         style={{ flex: 1 }}
-        height="calc(100vh - 320px)"
+        height="calc(100vh - 280px)"
         language="lua"
         theme={theme}
         value={value}
