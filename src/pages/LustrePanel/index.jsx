@@ -154,11 +154,11 @@ function LustrePanel() {
   };
 
   return (
-    <Layout style={{ padding: "5px" }}>
-      <Layout>
+    <Layout style={{ padding: "5px", height: "100vh" }}>
+      <Layout style={{ height: "100%" }}>
         {contextHolder}
-        <Flex style={{ margin: "1px 1px" }} gap="large">
-          <Flex vertical style={{ width: "80%" }} gap="middle">
+        <Flex style={{ margin: "1px 1px", height: "100%" }} gap="large">
+          <Flex vertical style={{ width: "80%", height: "100%" }} gap="middle">
             <Row>
               <Button
                 size="large"
@@ -227,6 +227,7 @@ function LustrePanel() {
               value={editorCode}
               onChange={handleEditorChange}
               onExport={handleLustreExport}
+              style={{ flex: 1, height: "100%" }}
             />
           </Flex>
           <ConfigProvider
@@ -236,7 +237,7 @@ function LustrePanel() {
               },
             }}
           >
-            <Flex vertical style={{ width: "20%" }}>
+            <Flex vertical style={{ width: "20%", height: "100%" }}>
               <div
                 style={{
                   display: "flex",
@@ -256,7 +257,7 @@ function LustrePanel() {
                 style={{
                   whiteSpace: "pre-wrap",
                   resize: "vertical",
-                  height: "660px, ",
+                  height: "calc(100vh - 120px)",
                   overflowY: "auto",
                 }}
                 title="转化结果"

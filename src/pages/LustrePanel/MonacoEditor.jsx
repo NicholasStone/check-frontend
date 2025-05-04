@@ -1,5 +1,21 @@
-import { Button, Row, Select, Space, Input, Switch, InputNumber, Modal } from "antd";
-import { useRef, useState, useEffect, forwardRef, useImperativeHandle } from "react";
+import {
+  Button,
+  Row,
+  Select,
+  Space,
+  Input,
+  Switch,
+  InputNumber,
+  Modal,
+  Flex,
+} from "antd";
+import {
+  useRef,
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { Editor } from "@monaco-editor/react";
 import {
   PlusOutlined,
@@ -91,24 +107,32 @@ const MonacoEditor = forwardRef(({ value, onChange, onExport }, ref) => {
   };
   const handleCopy = () => {
     if (editorRef.current)
-      editorRef.current.trigger("keyboard", "editor.action.clipboardCopyAction", {});
+      editorRef.current.trigger(
+        "keyboard",
+        "editor.action.clipboardCopyAction",
+        {}
+      );
   };
   const handlePaste = () => {
     if (editorRef.current)
-      editorRef.current.trigger("keyboard", "editor.action.clipboardPasteAction", {});
+      editorRef.current.trigger(
+        "keyboard",
+        "editor.action.clipboardPasteAction",
+        {}
+      );
   };
 
   const handleSearch = () => {
     if (editorRef.current) {
       editorRef.current.focus();
-      editorRef.current.getAction('actions.find').run();
+      editorRef.current.getAction("actions.find").run();
     }
   };
 
   const handleReplace = () => {
     if (editorRef.current) {
       editorRef.current.focus();
-      editorRef.current.getAction('editor.action.startFindReplaceAction').run();
+      editorRef.current.getAction("editor.action.startFindReplaceAction").run();
     }
   };
 
@@ -151,7 +175,11 @@ const MonacoEditor = forwardRef(({ value, onChange, onExport }, ref) => {
 
   const handleMultiCursor = () => {
     if (editorRef.current) {
-      editorRef.current.trigger("keyboard", "editor.action.insertCursorBelow", {});
+      editorRef.current.trigger(
+        "keyboard",
+        "editor.action.insertCursorBelow",
+        {}
+      );
     }
   };
 
@@ -194,12 +222,15 @@ function example() returns (bool) {
     if (editorRef.current) {
       const selection = editorRef.current.getSelection();
       if (selection) {
-        editorRef.current.deltaDecorations([], [
-          {
-            range: selection,
-            options: { className: 'highlighted-text' }
-          }
-        ]);
+        editorRef.current.deltaDecorations(
+          [],
+          [
+            {
+              range: selection,
+              options: { className: "highlighted-text" },
+            },
+          ]
+        );
       }
     }
   };
@@ -216,11 +247,11 @@ function example() returns (bool) {
         return editorRef.current.getValue();
       }
       return "";
-    }
+    },
   }));
 
   return (
-    <>
+    <Flex vertical style={{ flex: 1, height: "calc(100vh - 220px)" }} gap="middle">
       <Row style={{ margin: "0" }}>
         <Space>
           <Button
@@ -395,21 +426,9 @@ function example() returns (bool) {
           </Button>
         </Space>
       </Row>
-      <Modal
-        title="跳转到行"
-        open={isGoToLineModalVisible}
-        onOk={handleGoToLineConfirm}
-        onCancel={() => setIsGoToLineModalVisible(false)}
-      >
-        <InputNumber
-          min={1}
-          value={lineNumber}
-          onChange={setLineNumber}
-          style={{ width: "100%" }}
-        />
-      </Modal>
       <Editor
-        height={isFullscreen ? "100vh" : "660px"}
+        style={{ flex: 1 }}
+        height="calc(100vh - 320px)"
         language="lua"
         theme={theme}
         value={value}
@@ -433,9 +452,21 @@ function example() returns (bool) {
           automaticLayout: true,
         }}
       />
-    </>
+      <Modal
+        title="跳转到行"
+        open={isGoToLineModalVisible}
+        onOk={handleGoToLineConfirm}
+        onCancel={() => setIsGoToLineModalVisible(false)}
+      >
+        <InputNumber
+          min={1}
+          value={lineNumber}
+          onChange={setLineNumber}
+          style={{ width: "100%" }}
+        />
+      </Modal>
+    </Flex>
   );
 });
 
-export default MonacoEditor; 
- 
+export default MonacoEditor;
