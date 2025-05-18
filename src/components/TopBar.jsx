@@ -1,10 +1,10 @@
-import {Layout, Menu} from 'antd';
+import {Layout, Menu, ConfigProvider} from 'antd';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import {setSelectedMode} from "../store/modules/editor/bar.jsx";
 import {FileTextOutlined, FormOutlined, PlayCircleOutlined, QuestionCircleOutlined,} from '@ant-design/icons';
-import '../styles/components/TabBar.css';
+
 
 function TopBar() {
   const {Header} = Layout;
@@ -45,23 +45,36 @@ function TopBar() {
       }}>
         Brand
       </div>
-      <Menu
-        className="topbar-menu"
-        mode="horizontal"
-        defaultSelectedKeys={['1']}
-        items={items}
-        style={{
-          minWidth: 0,
-          background: 'transparent',
-          color: 'white',
-          height: '100%',
+      <ConfigProvider
+        theme={{
+          components: {
+            Menu: {
+              itemColor: 'white',
+              itemHoverColor: 'white', // Optional: if you want hover color to also be white
+              itemSelectedColor: 'white', // Optional: for selected items
+              horizontalItemSelectedColor: 'white', // Optional: for selected items in horizontal menu
+            },
+          },
         }}
-        onClick={(e) => {
-          const mode = e.key;
-          dispatch(setSelectedMode(mode));
-          navigate('/' + mode); // 导航到对应的页面
-        }}
-      />
+      >
+        <Menu
+          className="topbar-menu"
+          mode="horizontal"
+          defaultSelectedKeys={['1']}
+          items={items}
+          style={{
+            minWidth: 0,
+            background: 'transparent',
+            color: 'white',
+            height: '100%',
+          }}
+          onClick={(e) => {
+            const mode = e.key;
+            dispatch(setSelectedMode(mode));
+            navigate('/' + mode); // 导航到对应的页面
+          }}
+        />
+      </ConfigProvider>
     </Header>
   )
 }
