@@ -12,7 +12,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <ConfigProvider theme={{
       token: {
         borderRadius: 0,
-      }
+        colorPrimary: '#0E5890'
+      },
+      // cssVar: true,
     }}>
       <Provider store={store}>
         <RouterProvider router={router} />

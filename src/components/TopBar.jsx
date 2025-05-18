@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import {setSelectedMode} from "../store/modules/editor/bar.jsx";
 import {FileTextOutlined, FormOutlined, PlayCircleOutlined, QuestionCircleOutlined,} from '@ant-design/icons';
+import '../styles/components/TabBar.css';
 
 function TopBar() {
   const {Header} = Layout;
@@ -16,7 +17,7 @@ function TopBar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const {selectedMode} = useSelector(state => state.bar)
-  console.log(selectedMode)
+
   useEffect(() => {
     navigate('/' + selectedMode)
   }, [])
@@ -24,17 +25,36 @@ function TopBar() {
   return (
     <Header
       style={{
-        background: 'linear-gradient(to right, lightblue, white)'
+        background: 'linear-gradient(to right, #0E5890, #ffffff 30%)',
+        height: '35px',
+        lineHeight: '35px',
+        display: 'flex',
+        alignItems: 'flex-start',
+        paddingLeft: '10px',
       }}
       >
-      <div className="demo-logo"/>
+      <div className="demo-logo" style={{
+        height: '100%',
+        width: '35px',
+        lineHeight: '35px',
+        display: 'flex',
+        color: 'white',
+        fontSize: '16px',
+        fontWeight: 'bold',
+        marginRight: '10px',
+      }}>
+        Brand
+      </div>
       <Menu
+        className="topbar-menu"
         mode="horizontal"
         defaultSelectedKeys={['1']}
         items={items}
         style={{
           minWidth: 0,
           background: 'transparent',
+          color: 'white',
+          height: '100%',
         }}
         onClick={(e) => {
           const mode = e.key;

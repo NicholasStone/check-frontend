@@ -1,3 +1,4 @@
+import 'antd/dist/reset.css'
 import TopBar from './components/TopBar.jsx'
 import SideBar from './components/SideBar'
 import BottomBar from './components/BottomBar.jsx'

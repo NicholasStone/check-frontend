@@ -37,7 +37,15 @@ import {
   HighlightOutlined,
   AlignLeftOutlined,
   AlignRightOutlined,
+  UnorderedListOutlined,
+  OrderedListOutlined,
+  MenuOutlined,
+  EnterOutlined,
+  EllipsisOutlined,
+  BarChartOutlined,
+  ProjectOutlined,
 } from "@ant-design/icons";
+import IconFont from "../../utils/IconFont";
 
 const MonacoEditor = forwardRef(({ value, onChange, onExport }, ref) => {
   const editorRef = useRef(null);
@@ -251,7 +259,11 @@ function example() returns (bool) {
   }));
 
   return (
-    <Flex vertical style={{ flex: 1, height: "calc(100vh - 220px)" }} gap="middle">
+    <Flex
+      vertical
+      style={{ flex: 1, height: "calc(100vh - 220px)" }}
+      gap="middle"
+    >
       <Row style={{ margin: "0" }}>
         <Space>
           <Button
@@ -315,26 +327,71 @@ function example() returns (bool) {
             title="插入代码片段"
           />
           <Button
-            icon={<AlignLeftOutlined />}
             onClick={handleComment}
             title="注释/取消注释 (Ctrl+/)"
-          />
-          <Button
-            icon={<AlignRightOutlined />}
-            onClick={handleFold}
-            title="折叠代码块"
-          />
-          <Button
-            icon={<HighlightOutlined />}
-            onClick={handleHighlight}
-            title="高亮代码"
-          />
+            style={{
+              padding: "0 8.5px",
+              width: "32px",
+            }}
+          >
+            --
+          </Button>
           {/* {isFullscreen ? (
             <Button icon={<FullscreenExitOutlined />} onClick={toggleFullscreen} title="退出全屏 (F11)" />
           ) : (
             <Button icon={<FullscreenOutlined />} onClick={toggleFullscreen} title="全屏显示 (F11)" />
           )} */}
-          <span>主题：</span>
+          <Button
+            type={showLineNumbers ? "primary" : "default"}
+            onClick={() => setShowLineNumbers(!showLineNumbers)}
+            icon={<OrderedListOutlined />}
+            title={showLineNumbers ? "隐藏行号" : "显示行号"}
+          />
+          <Button
+            type={wordWrap ? "primary" : "default"}
+            onClick={() => setWordWrap(!wordWrap)}
+            icon={<EnterOutlined />}
+            title={wordWrap ? "关闭自动换行" : "开启自动换行"}
+          />
+          <Button
+            icon={<ProjectOutlined />}
+            style={{
+              // 顺时针旋转 90 度，并镜像
+              transform: "rotate(90deg)",
+            }}
+            type={showMinimap ? "primary" : "default"}
+            onClick={() => setShowMinimap(!showMinimap)}
+            title={showMinimap ? "隐藏小地图" : "显示小地图"}
+          />
+          <Button
+            icon={<EllipsisOutlined />}
+            type={showWhitespace ? "primary" : "default"}
+            onClick={() => setShowWhitespace(!showWhitespace)}
+            title={showWhitespace ? "隐藏空白字符" : "显示空白字符"}
+          />
+          <Button
+            icon={<IconFont type="icon-braces" />}
+            type={showBracketMatch ? "primary" : "default"}
+            onClick={() => setShowBracketMatch(!showBracketMatch)}
+            title={showBracketMatch ? "关闭括号匹配" : "开启括号匹配"}
+          />
+          <Button
+            icon={<IconFont type="icon-indent-left" />}
+            type={showIndentGuides ? "primary" : "default"}
+            onClick={() => setShowIndentGuides(!showIndentGuides)}
+            title={showIndentGuides ? "隐藏缩进参考线" : "显示缩进参考线"}
+          />
+          <Button
+            icon={<HighlightOutlined />}
+            type={showCurrentLine ? "primary" : "default"}
+            onClick={() => setShowCurrentLine(!showCurrentLine)}
+            title={showCurrentLine ? "关闭当前行高亮" : "开启当前行高亮"}
+          />
+        </Space>
+      </Row>
+      <Row style={{ margin: "0" }}>
+        <Space>
+          {/* <span>主题：</span> */}
           <Select
             value={theme}
             onChange={handleThemeChange}
@@ -343,9 +400,9 @@ function example() returns (bool) {
               { value: "vs-dark", label: "暗黑" },
               { value: "hc-black", label: "高对比" },
             ]}
-            style={{ width: 200 }}
+            style={{ width: 100 }}
           />
-          <span>字体：</span>
+
           <Select
             value={fontFamily}
             onChange={handleFontFamilyChange}
@@ -355,7 +412,7 @@ function example() returns (bool) {
               { value: "Fira Code", label: "Fira Code" },
               { value: "Source Code Pro", label: "Source Code Pro" },
             ]}
-            style={{ width: 150 }}
+            style={{ width: 100 }}
           />
           <Button
             icon={<MinusOutlined />}
@@ -368,58 +425,6 @@ function example() returns (bool) {
             onClick={increaseFontSize}
             title="增大字号"
           />
-        </Space>
-      </Row>
-      <Row style={{ margin: "0" }}>
-        <Space>
-          <Button
-            type={showLineNumbers ? "primary" : "default"}
-            onClick={() => setShowLineNumbers(!showLineNumbers)}
-          >
-            {showLineNumbers ? "隐藏行号" : "显示行号"}
-          </Button>
-          <Button
-            type={wordWrap ? "primary" : "default"}
-            onClick={() => setWordWrap(!wordWrap)}
-          >
-            {wordWrap ? "关闭自动换行" : "开启自动换行"}
-          </Button>
-          <Button
-            type={showMinimap ? "primary" : "default"}
-            onClick={() => setShowMinimap(!showMinimap)}
-          >
-            {showMinimap ? "隐藏小地图" : "显示小地图"}
-          </Button>
-          <Button
-            type={showWhitespace ? "primary" : "default"}
-            onClick={() => setShowWhitespace(!showWhitespace)}
-          >
-            {showWhitespace ? "隐藏空白字符" : "显示空白字符"}
-          </Button>
-          <Button
-            type={showBracketMatch ? "primary" : "default"}
-            onClick={() => setShowBracketMatch(!showBracketMatch)}
-          >
-            {showBracketMatch ? "关闭括号匹配" : "开启括号匹配"}
-          </Button>
-          <Button
-            type={showIndentGuides ? "primary" : "default"}
-            onClick={() => setShowIndentGuides(!showIndentGuides)}
-          >
-            {showIndentGuides ? "隐藏缩进参考线" : "显示缩进参考线"}
-          </Button>
-          <Button
-            type={showLineEndings ? "primary" : "default"}
-            onClick={() => setShowLineEndings(!showLineEndings)}
-          >
-            {showLineEndings ? "隐藏行尾字符" : "显示行尾字符"}
-          </Button>
-          <Button
-            type={showCurrentLine ? "primary" : "default"}
-            onClick={() => setShowCurrentLine(!showCurrentLine)}
-          >
-            {showCurrentLine ? "关闭当前行高亮" : "开启当前行高亮"}
-          </Button>
         </Space>
       </Row>
       <Editor
