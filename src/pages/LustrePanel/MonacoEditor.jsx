@@ -261,7 +261,7 @@ function example() returns (bool) {
   return (
     <Flex
       vertical
-      style={{ flex: 1, height: "calc(100vh - 220px)" }}
+      style={{ flex: 1, height: "100%" }}
       gap="middle"
     >
       <Row style={{ margin: "0" }}>
@@ -429,7 +429,7 @@ function example() returns (bool) {
       </Row>
       <Editor
         style={{ flex: 1 }}
-        height="calc(100vh - 280px)"
+        height="100%"
         language="lua"
         theme={theme}
         value={value}

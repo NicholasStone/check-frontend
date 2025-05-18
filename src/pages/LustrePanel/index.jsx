@@ -279,7 +279,7 @@ function LustrePanel() {
               style={{
                 whiteSpace: "pre-wrap",
                 resize: "vertical",
-                height: "calc(100vh - 180px)",
+                height: "100%",
                 overflowY: "auto",
               }}
               title="转化结果"

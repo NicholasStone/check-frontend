@@ -3,24 +3,32 @@ import TopBar from './components/TopBar.jsx'
 import SideBar from './components/SideBar'
 import BottomBar from './components/BottomBar.jsx'
 import {Outlet} from 'react-router-dom'
-
-import {Flex, Layout} from 'antd';
+import {ConfigProvider, Flex, Layout} from 'antd';
 
 function App() {
-
   return (
-    <Layout style={{height: '100%', width: '100%'}}>
-      <Flex vertical style={{height: '100%', width: '100%'}}>
-        <TopBar />
-        <Flex gap="middle" style={{height: 'calc(100vh - 130px)'}}>
-          <SideBar />
-          <Layout>
-            <Outlet />
-          </Layout>
+    <ConfigProvider
+      theme={{
+        token: {
+          borderRadius: 0,
+          colorPrimary: "#0E5890",
+        },
+        // cssVar: true,
+      }}
+    >
+      <Layout style={{height: '100%', width: '100%'}}>
+        <Flex vertical style={{height: '100%', width: '100%'}}>
+          <TopBar />
+          <Flex gap="middle" style={{height: 'calc(100vh - 6vh)'}}>
+            <SideBar />
+            <Layout>
+              <Outlet />
+            </Layout>
+          </Flex>
+          <BottomBar />
         </Flex>
-        <BottomBar />
-      </Flex>
-    </Layout>
+      </Layout>
+    </ConfigProvider>
   );
 }
 

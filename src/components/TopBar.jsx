@@ -26,8 +26,8 @@ function TopBar() {
     <Header
       style={{
         background: 'linear-gradient(to right, #0E5890, #ffffff 30%)',
-        height: '35px',
-        lineHeight: '35px',
+        height: '3vh',
+        lineHeight: '3vh',
         display: 'flex',
         alignItems: 'flex-start',
         paddingLeft: '10px',
@@ -35,8 +35,8 @@ function TopBar() {
       >
       <div className="demo-logo" style={{
         height: '100%',
-        width: '35px',
-        lineHeight: '35px',
+        width: '3vh',
+        lineHeight: '3vh',
         display: 'flex',
         color: 'white',
         fontSize: '16px',

@@ -9,16 +9,8 @@ import router from './router'
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ConfigProvider theme={{
-      token: {
-        borderRadius: 0,
-        colorPrimary: '#0E5890'
-      },
-      // cssVar: true,
-    }}>
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
-    </ConfigProvider>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
