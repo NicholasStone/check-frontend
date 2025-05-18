@@ -412,7 +412,7 @@ function example() returns (bool) {
               { value: "Fira Code", label: "Fira Code" },
               { value: "Source Code Pro", label: "Source Code Pro" },
             ]}
-            style={{ width: 100 }}
+            style={{ width: 150 }}
           />
           <Button
             icon={<MinusOutlined />}
