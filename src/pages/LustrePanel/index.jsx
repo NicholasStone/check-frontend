@@ -10,14 +10,14 @@ import {
   Row,
 } from "antd";
 import { useState, useRef, useEffect } from "react";
-import { request } from "../../utils";
+import { request } from "@/utils/request";
 import { useDispatch } from "react-redux";
-import { setParsedSynLong } from "../../store/modules/lustre/synlong.jsx";
+import { setParsedSynLong } from "@/store/modules/lustre/synlong.jsx";
 import {
   setAutos,
   setDeclaration,
   setSystemDeclaration,
-} from "../../store/modules/editor/model";
+} from "@/store/modules/editor/model";
 import { UploadOutlined, ExportOutlined } from "@ant-design/icons";
 import MonacoEditor from "./MonacoEditor";
 

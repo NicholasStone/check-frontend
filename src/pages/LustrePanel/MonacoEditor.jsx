@@ -45,7 +45,7 @@ import {
   BarChartOutlined,
   ProjectOutlined,
 } from "@ant-design/icons";
-import IconFont from "../../utils/IconFont";
+import IconFont from "@/utils/IconFont";
 
 const MonacoEditor = forwardRef(({ value, onChange, onExport }, ref) => {
   const editorRef = useRef(null);

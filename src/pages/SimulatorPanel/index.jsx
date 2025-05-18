@@ -1,5 +1,5 @@
 import {Button, Divider, Flex, Input, Layout, Slider, Space, theme} from 'antd';
-import IconFont from '../../utils/IconFont';
+import IconFont from '@/utils/IconFont';
 
 const {Sider, Content} = Layout
 
