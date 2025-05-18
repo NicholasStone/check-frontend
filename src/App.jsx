@@ -19,7 +19,7 @@ function App() {
       <Layout style={{height: '100%', width: '100%'}}>
         <Flex vertical style={{height: '100%', width: '100%'}}>
           <TopBar />
-          <Flex gap="middle" style={{height: 'calc(100vh - 6vh)'}}>
+          <Flex gap="middle" style={{height: 'calc(100vh - 7vh)'}}>
             <SideBar />
             <Layout>
               <Outlet />
