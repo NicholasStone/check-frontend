@@ -1,9 +1,10 @@
-import {Layout, Menu} from 'antd';
+import {Layout, Menu, ConfigProvider} from 'antd';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import {setSelectedMode} from "../store/modules/editor/bar.jsx";
 import {FileTextOutlined, FormOutlined, PlayCircleOutlined, QuestionCircleOutlined,} from '@ant-design/icons';
+
 
 function TopBar() {
   const {Header} = Layout;
@@ -16,7 +17,7 @@ function TopBar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const {selectedMode} = useSelector(state => state.bar)
-  console.log(selectedMode)
+
   useEffect(() => {
     navigate('/' + selectedMode)
   }, [])
@@ -24,30 +25,56 @@ function TopBar() {
   return (
     <Header
       style={{
-        overflow: 'auto',
-        width: '100vw',
-        position: 'fixed',
-        left: 0,
-        top: 0,
-        right: 0,
-        background: 'linear-gradient(to right, lightblue, white)',// TODO: 这里有问题, 不加这句两边为什么有些黑色区域
+        background: 'linear-gradient(to right, #0E5890, #ffffff 30%)',
+        height: '4vh',
+        lineHeight: '4vh',
+        display: 'flex',
+        alignItems: 'flex-start',
+        paddingLeft: '10px',
+      }}
+      >
+      <div className="demo-logo" style={{
+        height: '100%',
+        width: '4vw',
+        lineHeight: '4vh',
+        display: 'flex',
+        color: 'white',
+        fontSize: '16px',
+        fontWeight: 'bold',
+        marginRight: '10px',
       }}>
-      <div className="demo-logo"/>
-      <Menu
-        mode="horizontal"
-        defaultSelectedKeys={['1']}
-        items={items}
-        style={{
-          flex: 1,
-          minWidth: 0,
-          background: 'linear-gradient(to right, lightblue, white)',// 渐变色
+        Brand
+      </div>
+      <ConfigProvider
+        theme={{
+          components: {
+            Menu: {
+              itemColor: 'white',
+              itemHoverColor: 'white', // Optional: if you want hover color to also be white
+              itemSelectedColor: 'white', // Optional: for selected items
+              horizontalItemSelectedColor: 'white', // Optional: for selected items in horizontal menu
+            },
+          },
         }}
-        onClick={(e) => {
-          const mode = e.key;
-          dispatch(setSelectedMode(mode));
-          navigate('/' + mode); // 导航到对应的页面
-        }}
-      />
+      >
+        <Menu
+          className="topbar-menu"
+          mode="horizontal"
+          defaultSelectedKeys={['1']}
+          items={items}
+          style={{
+            minWidth: 0,
+            background: 'transparent',
+            color: 'white',
+            height: '100%',
+          }}
+          onClick={(e) => {
+            const mode = e.key;
+            dispatch(setSelectedMode(mode));
+            navigate('/' + mode); // 导航到对应的页面
+          }}
+        />
+      </ConfigProvider>
     </Header>
   )
 }

@@ -52,13 +52,13 @@ function SideBar() {
   return (
     <Sider
       theme="light"
-      style={{
-        overflow: 'auto',
-        position: 'fixed',
-        left: 0,
-        top: '7.5vh',
-        bottom: 0,
-      }}
+      // style={{
+      //   overflow: 'auto',
+      //   position: 'fixed',
+      //   left: 0,
+      //   top: '7.5vh',
+      //   bottom: 0,
+      // }}
     >
       <div className="demo-logo-vertical"/>
       <Menu mode="inline" defaultSelectedKeys={['1']} items={items}/>

@@ -1,9 +1,9 @@
 import {Button, Flex, Input, Layout, List, notification, theme} from 'antd';
 import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {setProperties} from '../../store/modules/verifier/property';
-import Signal from '../../components/Signal';
-import {request} from '../../utils/request';
+import {setProperties} from '@/store/modules/verifier/property';
+import Signal from '@/components/Signal';
+import {request} from '@/utils/request';
 
 const {Sider, Content} = Layout
 

@@ -1,11 +1,11 @@
 import {Flex, Layout, Menu} from 'antd';
 // import { useState } from 'react';
-import IconFont from '../../utils/IconFont';
-import Template from '../../components/Template';
+import IconFont from '@/utils/IconFont';
+import Template from '@/components/Template';
 import {useDispatch, useSelector} from 'react-redux';
-import Declaration from '../../components/Declaration';
-import {setSelectedMenuItem} from '../../store/modules/editor/bar';
-import Toolbar from '../../components/Toolbar'
+import Declaration from '@/components/Declaration';
+import {setSelectedMenuItem} from '@/store/modules/editor/bar';
+import Toolbar from '@/components/Toolbar'
 
 
 const {Sider, Content} = Layout

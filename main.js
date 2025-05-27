@@ -46,16 +46,16 @@ function createWindow() {
       contextIsolation: false, // 可以使用require方法
       enableRemoteModule: true, // 可以使用remote方法
       webSecurity: false, // 它将禁用同源策略 (通常用来测试网站), 如果此选项不是由开发者设置的默认为true
-      proxy: {
-        proxyRules: "http=myproxy:8080,https=myproxy:8080",
-        proxyBypassRules: "<local>"
-      },
+      // proxy: {
+      //   proxyRules: "http=myproxy:8080,https=myproxy:8080",
+      //   proxyBypassRules: "<local>"
+      // },
     },
   })
 
   mainWindow.loadURL("http://localhost:" + port);
 
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // 关闭window时触发下列事件.
   mainWindow.on('closed', function () {
