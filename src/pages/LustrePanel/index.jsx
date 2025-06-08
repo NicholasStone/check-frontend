@@ -190,9 +190,9 @@ function LustrePanel() {
                   ? editorRef.current.getValue()
                   : "";
                 const body = { file: code };
-                request.post("/lustre/convert", body).then((res) => {
+                request.post("/lustre/check", body).then((res) => {
                   if (res.code === 200) {
-                    setResultValue(res.data.jsonModel);
+                    setResultValue(res.data.result);
                   } else {
                     setResultValue("");
                     api.error({
@@ -206,7 +206,7 @@ function LustrePanel() {
               icon={<ExportOutlined />}
               type="primary"
             >
-              状态机转化
+              验证
             </Button>
             <Upload
               accept=".txt,.lus"
