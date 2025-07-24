@@ -27,3 +27,4 @@ dist-ssr
 
 run.sh
 out/
+release/
