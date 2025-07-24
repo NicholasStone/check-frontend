@@ -5,7 +5,15 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base:'./',
+  base: './',
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+    assetsInlineLimit: 0,
+  },
   server:{
     proxy:{
       "/api":{
