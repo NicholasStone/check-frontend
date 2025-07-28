@@ -9,8 +9,8 @@
     "preview": "vite preview",
     "electron:build": "electron-packager . checker --platform=darwin --electron-version=25.3.1 --overwrite --download.mirrorOptions.mirror=https://npmmirror.com/mirrors/electron/ --out=./out ",
     "electron:win7-build": "electron-packager . checker --platform=win32 --arch=ia32 --electron-version=25.3.1 --overwrite --download.mirrorOptions.mirror=https://npmmirror.com/mirrors/electron/ --out=./out --asar",
-    "electron22:win7-build": "electron-packager . checker --platform=win32 --arch=ia32 --electron-version=22.3.26 --overwrite --download.mirrorOptions.mirror=https://npmmirror.com/mirrors/electron/ --out=./out --asar",
-    "electron22:win7-build2": "electron-packager . checker --platform=win32 --arch=ia32 --electron-version=22.3.26 --overwrite --download.mirrorOptions.mirror=https://npmmirror.com/mirrors/electron/ --out=./out",
+    "build:win7-embedded": "node build/build-win7-embedded.js",
+    "test:win7": "node build/test-win7-build.js",
     "electron:win10-build": "electron-packager . checker --platform=win32 --arch=x64 --electron-version=25.3.1 --overwrite --download.mirrorOptions.mirror=https://npmmirror.com/mirrors/electron/ --out=./out "
   },
   "dependencies": {
@@ -30,6 +30,7 @@
     "http-proxy": "^1.18.1",
     "http-server": "^14.1.1",
     "konva": "^9.3.6",
+    "mime-types": "^2.1.35",
     "monaco-editor": "^0.25.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
