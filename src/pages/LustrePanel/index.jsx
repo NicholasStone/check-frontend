@@ -190,18 +190,27 @@ function LustrePanel() {
                   ? editorRef.current.getValue()
                   : "";
                 const body = { file: code };
-                request.post("/lustre/check", body).then((res) => {
-                  if (res.code === 200) {
-                    setResultValue(res.data.result);
-                  } else {
-                    setResultValue("");
-                    api.error({
-                      message: "转化出错",
-                      description: res.message,
-                      duration: 5,
+                request.post("/lustre/check", body)
+                    .then((res) => {
+                      if (res.code === 200) {
+                        setResultValue(res.data.result);
+                      } else {
+                        setResultValue("");
+                        api.error({
+                          message: "转化出错",
+                          description: res.message,
+                          duration: 5,
+                        });
+                      }
+                    })
+                    .catch(() => {
+                      setResultValue("");
+                      api.error({
+                        message: "服务异常",
+                        description: "后端接口未找到或启动失败",
+                        duration: 5,
+                      });
                     });
-                  }
-                });
               }}
               icon={<ExportOutlined />}
               type="primary"
