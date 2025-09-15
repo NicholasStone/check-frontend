@@ -317,7 +317,7 @@ function LustrePanel() {
                 style={{ float: "right" }}
                 onClick={handleExportResult}
               >
-                导出转化结果
+                导出结果
               </Button>
             </div>
             <Card
@@ -327,7 +327,7 @@ function LustrePanel() {
                 height: "100%",
                 overflowY: "auto",
               }}
-              title="转化结果"
+              title="转换/验证结果"
             >
               {resultValue}
             </Card>
