@@ -24,19 +24,19 @@ function VerifierPanel() {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (res) => {
     if (res.code === 200) {
-      if (res.data.result === true) {
+      // if (res.data.result === true) {
         api.success({
           message: "验证结果",
           description: String(res.data.result),
           duration: 5,
         });
-      } else {
-        api.error({
-          message: "验证结果",
-          description: String(res.data.result),
-          duration: 5,
-        });
-      }
+      // } else {
+      //   api.error({
+      //     message: "验证结果",
+      //     description: String(res.data.result),
+      //     duration: 5,
+      //   });
+      // }
 
     } else {
       api.error({
@@ -76,8 +76,9 @@ function VerifierPanel() {
 
     })
     dispatch(setProperties(newProperties))
-    if (selectedRow === 1) openNotification({code: 200, data: {result: false}, message: 'SUCCESS'})
-    else openNotification(res)
+    // if (selectedRow === 1) openNotification({code: 200, data: {result: false}, message: 'SUCCESS'})
+    // else openNotification(res)
+    openNotification(res)
   }
 
   function onAddBtnClicked() {

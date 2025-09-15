@@ -18,7 +18,7 @@ import {
   setDeclaration,
   setSystemDeclaration,
 } from "@/store/modules/editor/model";
-import { UploadOutlined, ExportOutlined } from "@ant-design/icons";
+import { UploadOutlined, ExportOutlined, StepForwardOutlined } from "@ant-design/icons";
 import MonacoEditor from "./MonacoEditor";
 
 function LustrePanel() {
@@ -212,10 +212,46 @@ function LustrePanel() {
                       });
                     });
               }}
-              icon={<ExportOutlined />}
+              icon={<StepForwardOutlined />}
               type="primary"
             >
               验证
+            </Button>
+            <Button
+                style={{ marginLeft: "10px" }}
+                size="large"
+                onClick={() => {
+                  setResultValue("");
+                  const code = editorRef.current
+                      ? editorRef.current.getValue()
+                      : "";
+                  const body = { file: code };
+                  request.post("/lustre/convert", body)
+                      .then((res) => {
+                        if (res.code === 200) {
+                          setResultValue(res.data.result);
+                        } else {
+                          setResultValue("");
+                          api.error({
+                            message: "转化为自动机出错",
+                            description: res.message,
+                            duration: 5,
+                          });
+                        }
+                      })
+                      .catch(() => {
+                        setResultValue("");
+                        api.error({
+                          message: "服务异常",
+                          description: "后端接口未找到或启动失败",
+                          duration: 5,
+                        });
+                      });
+                }}
+                icon={<ExportOutlined />}
+                type="primary"
+            >
+              转自动机
             </Button>
             <Upload
               accept=".txt,.lus"
