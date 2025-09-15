@@ -6,14 +6,8 @@ const propertyStore = createSlice({
     properties: [
       {
         id: 1,
-        content: 'E<> P.cs imply i == j',
-        note: 'Mutex requirement.',
-        result: 'unknown'
-      },
-      {
-        id: 2,
         content: 'A[] not deadlock',
-        note: 'The system is deadlock free.',
+        note: '系统永远不会死锁',
         result: 'unknown'
       },
     ]
